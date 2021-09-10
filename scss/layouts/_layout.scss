@@ -1,0 +1,44 @@
+.header{
+    padding-block: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    background-color: $main-clr;
+
+    &__logo{
+        display: block;
+        max-height: 100px;
+        
+    }
+
+    &__list{
+        display: flex;
+        align-items: center;
+        gap: 50px;
+
+        &--products{
+            font-size: 2rem;
+            text-transform: uppercase;
+        }
+
+        &--index{
+            font-size: 2rem;
+            text-transform: uppercase;
+        }
+    
+        &--basket::before{
+            content: "\f07a";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            font-size: 2rem;
+        }
+
+    }
+
+   
+
+}
+
+.main-title{
+    padding-block: 20px;
+    text-align: center;
+}

@@ -1,4 +1,8 @@
-body{
-    color: black;
-    font-size: 2rem;
-}
+@import "utils/variables";
+@import "utils/mixins";
+@import "base/base";
+@import "layouts/layout";
+@import "pages/index";
+@import "pages/custom";
+@import "pages/shopping-basket";
+@import "pages/confirmation";

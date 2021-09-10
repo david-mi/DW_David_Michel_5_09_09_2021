@@ -1,0 +1,85 @@
+.custom__item{
+    text-align: center;
+    display: grid;
+    place-items: center;
+    grid-template-columns: auto repeat(3, 1fr);
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-areas:
+    "link . name ."
+    "link previous custom next"
+    "link . price .";
+
+    &--link{
+        grid-area: link;
+        height: 250px;
+        width: 300px;
+        display: block;
+        overflow: hidden;
+        @media screen and (max-width: 700px){
+            width: 80%;
+        }
+    }
+    
+    &--picture{
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 1;
+        transition: 500ms linear;
+    }
+
+    &--name{
+        grid-area: name;
+    }
+
+    &--price{
+        grid-area: price;
+    }
+
+    .custom{
+        grid-area: custom;
+        background-color: red;
+        align-self: stretch;
+        justify-self: stretch;
+    }
+
+    .custom-next, .custom-previous{
+        width: 50px;
+        aspect-ratio: 1/1;
+        position: relative;
+        border-radius: 50%;
+        border: 0px;
+        background-color: $main-clr;
+    }
+
+    .custom-next{
+        grid-area: next;
+        
+    }
+
+    .custom-next::before, .custom-previous::before{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        font-size: 3rem;
+        
+    }
+
+    .custom-next::before{
+        content: '\f35a'
+
+    }
+
+    .custom-previous::before{
+        content: '\f359'
+    }
+
+    .custom-previous{
+        grid-area: previous;
+    }
+
+}
