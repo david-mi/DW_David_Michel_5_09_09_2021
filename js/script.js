@@ -13,7 +13,7 @@ fetch(apiTeddies).then((response)=>{
     //   console.log(data[i])
         list.innerHTML += `
         <li class="list__item">
-            <h3 class="list__item--name">${data[i].name}</h3>
+                <h2 class="list__item--name">${data[i].name}</h2>
             <span class="list__item--description">${data[i].description}</span>
             <strong class="list__item--price">${data[i].price}€</strong>
             <a class="list__item--link" href="${data[i].imageUrl}"><img class="list__item--picture" src="${data[i].imageUrl}"></a>

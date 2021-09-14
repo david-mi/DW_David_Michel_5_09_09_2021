@@ -1,3 +1,39 @@
+
+@keyframes slide-right{
+    70%{
+       transform: translateX(-5%)  
+    }
+   
+    100%{
+        transform: translateX(0%)
+    }
+}
+
+@keyframes slide-left{
+    70%{
+        transform: translateX(5%)  
+     }
+    
+     100%{
+         transform: translateX(0%)
+     }
+}
+
+@keyframes picture-anim{
+    0%{
+        filter: blur(10px)
+    }
+
+
+    
+
+    100%{
+        filter :blur(0px);
+        opacity: 1;
+    }
+
+}
+
 .products{
     padding: 20px;
 
@@ -38,6 +74,16 @@
             gap: 20px 0px;
         }
 
+        &:nth-child(even){
+            transform: translateX(100%);
+            animation: slide-right 800ms cubic-bezier(.35,.62,.38,.97) forwards;
+        }
+
+        &:nth-child(odd){
+            transform: translateX(-100%);
+            animation: slide-left 800ms cubic-bezier(.35,.62,.38,.97) forwards;
+        }
+
         &::before{
             content: '';
             inset: 0px;
@@ -76,6 +122,7 @@
 
         &--link{
             grid-area: link;
+            position: relative;
             height: 250px;
             width: 300px;
             display: block;
@@ -84,6 +131,7 @@
                 width: 80%;
             }
         }
+
         
         &--picture{
             display: block;
@@ -92,6 +140,9 @@
             object-fit: cover;
             z-index: 1;
             transition: 500ms linear;
+            animation: picture-anim 300ms 1s linear forwards ;
+            opacity: 0;
+            
         }
 
         .add-product, .remove-product{

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;0,900;1,700;1,800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap");
 * {
   margin: 0px;
   padding: 0px;
@@ -6,7 +6,7 @@
 
 body {
   font-family: 'Nunito', sans-serif;
-  max-width: 1400px;
+  max-width: 1200px;
   margin: auto;
 }
 
@@ -21,17 +21,28 @@ a {
 
 .header {
   padding-block: 20px;
-  display: flex;
-  justify-content: space-evenly;
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   background-color: #F4E9F0;
+  grid-template-areas: "logo list" "logo list";
+}
+
+@media screen and (max-width: 700px) {
+  .header {
+    grid-template-areas: "logo logo" "list list";
+  }
 }
 
 .header__logo {
+  grid-area: logo;
   display: block;
   max-height: 100px;
 }
 
 .header__list {
+  grid-area: list;
   display: flex;
   align-items: center;
   gap: 50px;
@@ -57,6 +68,34 @@ a {
 .main-title {
   padding-block: 20px;
   text-align: center;
+}
+
+@keyframes slide-right {
+  70% {
+    transform: translateX(-5%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slide-left {
+  70% {
+    transform: translateX(5%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes picture-anim {
+  0% {
+    filter: blur(10px);
+  }
+  100% {
+    filter: blur(0px);
+    opacity: 1;
+  }
 }
 
 .products {
@@ -100,6 +139,16 @@ a {
   }
 }
 
+.products .list__item:nth-child(even) {
+  transform: translateX(100%);
+  animation: slide-right 800ms cubic-bezier(0.35, 0.62, 0.38, 0.97) forwards;
+}
+
+.products .list__item:nth-child(odd) {
+  transform: translateX(-100%);
+  animation: slide-left 800ms cubic-bezier(0.35, 0.62, 0.38, 0.97) forwards;
+}
+
 .products .list__item::before {
   content: '';
   inset: 0px;
@@ -138,6 +187,7 @@ a {
 
 .products .list__item--link {
   grid-area: link;
+  position: relative;
   height: 250px;
   width: 300px;
   display: block;
@@ -157,6 +207,8 @@ a {
   object-fit: cover;
   z-index: 1;
   transition: 500ms linear;
+  animation: picture-anim 300ms 1s linear forwards;
+  opacity: 0;
 }
 
 .products .list__item .add-product, .products .list__item .remove-product {
@@ -205,18 +257,68 @@ a {
   content: "\f1f8";
 }
 
+.custom__list {
+  padding: 20px;
+}
+
+@keyframes choice {
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes shadows {
+  100% {
+    box-shadow: 0px 0px 5px #494949;
+  }
+}
+
+@keyframes opacity {
+  100% {
+    opacity: 1;
+  }
+}
+
 .custom__item {
+  height: 350px;
+  position: relative;
+  z-index: 1;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  animation: shadows 300ms 1s ease-in-out forwards ,opacity 600ms linear forwards;
+  box-shadow: 0px 0px 0px #494949;
   text-align: center;
   display: grid;
-  place-items: center;
-  grid-template-columns: auto repeat(3, 1fr);
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-template-areas: "link . name ." "link previous custom next" "link . price .";
+  opacity: 0;
+  grid-template-columns: auto auto repeat(3, 1fr);
+  grid-template-rows: 60px auto 60px;
+  grid-template-areas: "name price . instruction ." "link link previous custom next" "link link . . .";
+}
+
+@media screen and (max-width: 700px) {
+  .custom__item {
+    height: 500px;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 60px auto 25px auto;
+    grid-template-areas: "name name  price price" "link link link link " "instruction instruction instruction instruction" "previous custom custom next";
+  }
+}
+
+.custom__item::before {
+  content: '';
+  animation: choice 1s linear forwards;
+  position: absolute;
+  inset: 0px;
+  background-color: white;
+  z-index: 100;
+  transform-origin: bottom;
+  transform: translateY(0%);
 }
 
 .custom__item--link {
   grid-area: link;
-  height: 250px;
+  max-height: 300px;
   width: 300px;
   display: block;
   overflow: hidden;
@@ -224,7 +326,9 @@ a {
 
 @media screen and (max-width: 700px) {
   .custom__item--link {
-    width: 80%;
+    justify-self: center;
+    width: 100%;
+    height: 100%;
   }
 }
 
@@ -239,26 +343,52 @@ a {
 
 .custom__item--name {
   grid-area: name;
+  background-color: #F4E9F0;
+  display: flex;
+  flex-flow: nowrap row;
+  justify-content: center;
+  align-items: center;
 }
 
 .custom__item--price {
+  background-color: #F4E9F0;
   grid-area: price;
+  display: flex;
+  flex-flow: nowrap row;
+  justify-content: center;
+  align-items: center;
 }
 
-.custom__item .custom {
+.custom__item .custom-choice {
   grid-area: custom;
-  background-color: red;
-  align-self: stretch;
-  justify-self: stretch;
+  position: relative;
+  font-size: 3rem;
+  font-style: italic;
+  display: flex;
+  flex-flow: nowrap row;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 700px) {
+  .custom__item .custom-choice {
+    font-size: 2rem;
+  }
 }
 
 .custom__item .custom-next, .custom__item .custom-previous {
+  align-self: center;
+  justify-self: center;
   width: 50px;
   aspect-ratio: 1/1;
   position: relative;
   border-radius: 50%;
   border: 0px;
   background-color: #F4E9F0;
+}
+
+.custom__item .custom-previous {
+  grid-area: previous;
 }
 
 .custom__item .custom-next {
@@ -283,7 +413,9 @@ a {
   content: '\f359';
 }
 
-.custom__item .custom-previous {
-  grid-area: previous;
+.custom__item .instruction {
+  grid-area: instruction;
+  font-size: 1rem;
+  align-self: center;
 }
 /*# sourceMappingURL=style.css.map */
