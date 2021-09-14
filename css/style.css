@@ -58,11 +58,20 @@ a {
   text-transform: uppercase;
 }
 
+.header__list--basket {
+  position: relative;
+}
+
 .header__list--basket::before {
   content: "\f07a";
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
   font-size: 2rem;
+}
+
+.header__list .basket-link {
+  position: absolute;
+  inset: 0px;
 }
 
 .main-title {
@@ -417,5 +426,31 @@ a {
   grid-area: instruction;
   font-size: 1rem;
   align-self: center;
+}
+
+.custom__item .delete-custom {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 33px;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  border: 0px;
+  background-color: transparent;
+}
+
+.custom__item .delete-custom:active {
+  transform: scale(0.8);
+}
+
+.custom__item .delete-custom::after {
+  position: absolute;
+  content: "\f1f8";
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-size: 1.5rem;
 }
 /*# sourceMappingURL=style.css.map */

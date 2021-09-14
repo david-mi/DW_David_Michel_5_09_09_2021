@@ -36,6 +36,10 @@
             font-size: 2rem;
             text-transform: uppercase;
         }
+
+        &--basket{
+            position: relative;
+        }
     
         &--basket::before{
             content: "\f07a";
@@ -43,6 +47,11 @@
             font-weight: 900;
             font-size: 2rem;
         }
+
+        .basket-link{
+            position: absolute;
+            inset:0px;
+         }
 
     }
 

@@ -161,5 +161,31 @@
         align-self: center;
     }
 
-    
+    .delete-custom{
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        width: 33px;
+        border-radius: 50%;
+        aspect-ratio: 1/1;
+        border: 0px;
+        background-color: transparent;
+        
+        &:active{
+            transform: scale(0.8);
+        }
+
+        &::after{
+            position: absolute;
+            content: "\f1f8";
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            font-size: 1.5rem;
+            
+        }
+    }
+
 }
