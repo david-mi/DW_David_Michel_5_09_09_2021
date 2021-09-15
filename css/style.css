@@ -19,6 +19,10 @@ a {
   color: black;
 }
 
+img {
+  display: block;
+}
+
 .header {
   padding-block: 20px;
   display: grid;
@@ -396,6 +400,14 @@ a {
   background-color: #F4E9F0;
 }
 
+.custom__item .custom-next:active, .custom__item .custom-previous:active {
+  transform: scale(0.8);
+}
+
+.custom__item .custom-next:hover, .custom__item .custom-previous:hover {
+  cursor: pointer;
+}
+
 .custom__item .custom-previous {
   grid-area: previous;
 }
@@ -428,15 +440,30 @@ a {
   align-self: center;
 }
 
-.custom__item .delete-custom {
+.custom__item .delete-custom, .custom__item .add-basket {
   position: absolute;
-  right: 20px;
-  top: 20px;
   width: 33px;
   border-radius: 50%;
   aspect-ratio: 1/1;
   border: 0px;
   background-color: transparent;
+}
+
+.custom__item .delete-custom {
+  right: 20px;
+  bottom: 20px;
+}
+
+@media screen and (max-width: 700px) {
+  .custom__item .delete-custom {
+    bottom: auto;
+    top: 14px;
+    left: 20px;
+  }
+}
+
+.custom__item .delete-custom:hover {
+  cursor: pointer;
 }
 
 .custom__item .delete-custom:active {
@@ -452,5 +479,83 @@ a {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
   font-size: 1.5rem;
+}
+
+.custom__item .add-basket {
+  right: 20px;
+  top: 14px;
+}
+
+.custom__item .add-basket:hover {
+  cursor: pointer;
+}
+
+.custom__item .add-basket:active {
+  transform: scale(0.8);
+}
+
+.custom__item .add-basket::after {
+  position: absolute;
+  content: "\f07a";
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-size: 1.5rem;
+}
+
+.basket-list {
+  padding: 20px;
+}
+
+.basket__item {
+  height: 150px;
+  display: grid;
+  margin-bottom: 20px;
+  place-items: center;
+  border: 2px solid black;
+  grid-template-rows: 1fr minmax(0, 1fr) 1fr;
+  grid-template-columns: repeat(2, 1fr) minmax(0, 1fr) 1fr;
+  grid-template-areas: "photo name label label " "photo color quantity quantity" "photo price total total";
+}
+
+.basket__item--picture {
+  grid-area: photo;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.basket__item--name {
+  grid-area: name;
+}
+
+.basket__item--color {
+  grid-area: color;
+}
+
+.basket__item--price {
+  grid-area: price;
+}
+
+.basket__item--quantity {
+  grid-area: quantity;
+  width: 30%;
+  text-align: center;
+  font-weight: 600;
+  font-size: 2rem;
+}
+
+.basket__item--quantity::-webkit-inner-spin-button {
+  opacity: 1;
+}
+
+.basket__item--quantity-label {
+  grid-area: label;
+}
+
+.basket__item--total {
+  grid-area: total;
 }
 /*# sourceMappingURL=style.css.map */

@@ -9,8 +9,12 @@ fetch(apiTeddies).then((response)=>{
  
 //// AFFICHAGE D'UN MESSAGE SI AUCUN ITEM N'A ETE CHOISI 
 
+const customEmpty = () =>{
+   document.querySelector('.main-title').innerText =`Vous n'avez sélectionné aucun produits`; 
+} 
+
 if (localStorage.length == 0){
-    document.querySelector('.main-title').innerText =`Vous n'avez sélectionné aucun produits`
+    customEmpty();
 }
 
 
@@ -36,6 +40,7 @@ if (localStorage.length == 0){
             <button type="submit" class="custom-next"></button>
             <button type="submit" class="custom-previous"></button>
             <button type="submit" class="delete-custom"></button>
+            <button type="submit" class="add-basket"></button>
             </li>`  
             
         
@@ -46,25 +51,25 @@ if (localStorage.length == 0){
 // / POUVOIR SELECTIONNER LA COULEUR DE SON CHOIX SELON L'OURS CHOISI
 
 let customChoice = document.querySelectorAll('.custom-choice');
-const nextColor = (d,j) =>{
-    if (colorNb < d.colors.length - 1){
-        colorNb += 1;
-    }
-    else{
-        colorNb = 0;
-    }
-    customChoice[j].innerText = d.colors[colorNb]
-} 
+// const nextColor = (d,j) =>{
+//     if (colorNb < d.colors.length - 1){
+//         colorNb += 1;
+//     }
+//     else{
+//         colorNb = 0;
+//     }
+//     customChoice[j].innerText = d.colors[colorNb]
+// } 
 
-const prevColor = (d,j) =>{
-    if (colorNb > 0){
-        colorNb -= 1;
-    }
-    else{
-        colorNb = d.colors.length - 1;
-    }
-    customChoice[j].innerText = d.colors[colorNb]
-}
+// const prevColor = (d,j) =>{
+//     if (colorNb > 0){
+//         colorNb -= 1;
+//     }
+//     else{
+//         colorNb = d.colors.length - 1;
+//     }
+//     customChoice[j].innerText = d.colors[colorNb]
+// }
 
 /// COULEUR SUIVANTE
 
@@ -116,25 +121,60 @@ for (let d of data){
     }  
 }
 
-/// SUPPRESSION DES PRODUITS AU CLIC SUR LA CORBEILLE
-
-/// ITERATION PARMI LES BOUTONS DE SUPPRESSION
-
-
-
+//////////////// SUPPRESSION DES PRODUITS DU DOM ET DU LOCALSTORAGE AU CLIC SUR LA CORBEILLE
 let deleteBtn = document.querySelectorAll('.delete-custom');
 let lists = document.querySelectorAll('.custom__list li')
+let itemNames = document.querySelectorAll('.custom__item--name');
 
+///////// ITERATION PARMI LES BOUTONS DE SUPPRESSION
 for (let i = 0; i < deleteBtn.length; i++){
     
+//// EVENEMENT AU CLIC SUR UN DES BOUTONS SUPPRIMER
     deleteBtn[i].addEventListener('click',() =>{
-       lists[i].remove()
+    lists[i].remove()
+
+//// ITERATION DANS LE LOCALSTORAGE
+    for (let [key, value] of Object.entries(localStorage)){
+        
+/// SI LA VALEUR ID DE L'ITEM CLIQUE EST LA MEME QUE CELLE DU LOCAL STORAGE ON SUPPRIME DU LOCAL STORAGE
+        if (customChoice[i].id == value){
+            localStorage.removeItem(itemNames[i].innerText)
+        }
+    }
+
+/// CHANGEMENT DU TITRE H1 SI TOUS LES PRODUITS ONT ETE SUPPRIMES
+        if (localStorage.length == 0){
+        customEmpty();
+        }
     })
 }
 
-//// EVENEMENT AU CLIC SUR UN DES BOUTONS SUPPRIMER
-
-
-
+////////////   AJOUT DES ITEMS AU PANIER
  
+let addBasketBtn = document.querySelectorAll('.add-basket')
+let multipleClr = 0;
+let basketItems = [];
+
+//// AJOUT AU CLIC SUR LE BOUTON PANIER DES ITEMS AVEC LEUR COULEUR DANS UN TABLEAU D'OBJETS
+
+for (let i = 0; i < addBasketBtn.length; i++){
+    // console.log(customChoice)
+    
+   
+    addBasketBtn[i].addEventListener('click', () =>{
+        basketItems.push({
+            name: itemNames[i].innerText,
+            id : customChoice[i].id,
+            color : customChoice[i].innerText
+        },)
+
+        /*CONVERSION DE L'OBJET EN CHAINE DE CARACTERES AFIN DE POUVOIR 
+        L'INTEGRER AU LOCALSTORAGE*/
+        localStorage.setItem('basket', JSON.stringify(basketItems))
+    })
+}
+
+
+
 });
+

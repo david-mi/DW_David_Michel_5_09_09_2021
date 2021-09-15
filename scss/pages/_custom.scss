@@ -125,6 +125,14 @@
         background-color: $main-clr;
     }
 
+    .custom-next:active, .custom-previous:active{
+        transform: scale(0.8);
+    }
+
+    .custom-next:hover, .custom-previous:hover{
+        cursor: pointer
+    }
+
     .custom-previous{
         grid-area: previous;
         
@@ -161,16 +169,29 @@
         align-self: center;
     }
 
-    .delete-custom{
+    .delete-custom, .add-basket{
         position: absolute;
-        right: 20px;
-        top: 20px;
         width: 33px;
         border-radius: 50%;
         aspect-ratio: 1/1;
         border: 0px;
         background-color: transparent;
+    }
+
+    .delete-custom{
+        right: 20px;
+        bottom: 20px;
+
+        @media screen and (max-width: 700px) {
+            bottom:auto;
+            top: 14px;
+            left: 20px;
+        }
         
+        &:hover{
+            cursor: pointer;
+        }
+
         &:active{
             transform: scale(0.8);
         }
@@ -188,4 +209,29 @@
         }
     }
 
+    .add-basket{
+        right: 20px;
+        top: 14px;
+    
+
+    &:hover{
+        cursor: pointer;
+    }
+
+    &:active{
+        transform: scale(0.8);
+    }
+
+    &::after{
+        position: absolute;
+        content: "\f07a";
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        font-size: 1.5rem;
+        
+    }
+    }
 }
