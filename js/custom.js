@@ -1,4 +1,3 @@
-let apiTeddies = "http://localhost:3000/api/teddies";
 fetch(apiTeddies).then((response)=>{
     return response.json();
 }).then((data)=>{
@@ -141,13 +140,40 @@ for (let i = 0; i < deleteBtn.length; i++){
  
 let addBasketBtn = document.querySelectorAll('.add-basket');
 let itemInstruction = document.querySelectorAll('.instruction');
-let basketItems = [];
+console.log(basketItems)
 
-//// AJOUT AU CLIC SUR LE BOUTON PANIER DES ITEMS AVEC LEUR COULEUR DANS UN TABLEAU D'OBJETS
+/* fonction pour animer l'icône du panier et ajouter un message coloré
+lorsque l'ajout à été réussi */
+
+const basketFail = (value) =>{
+
+    itemInstruction[value].innerText = `La peluche ${itemNames[value].innerText} en couleur ${customChoice[value].innerText} est déjà presente dans le panier`;
+    itemInstruction[value].classList.add('fail')
+
+    addBasketBtn[value].classList.add('basket-fail')
+    setTimeout(() => {
+        addBasketBtn[value].classList.remove('basket-fail')
+    }, 400);
+}
+
+/* fonction pour animer l'icône du panier et ajouter un message coloré
+lorsque l'ajout échoué */
+
+const basketSucces = (value) =>{
+    itemInstruction[value].innerText = `La peluche ${itemNames[value].innerText} en couleur ${customChoice[value].innerText} a été envoyée au panier`;
+    itemInstruction[value].classList.add('success');
+
+    addBasketBtn[value].classList.remove('add-basket')
+    addBasketBtn[value].classList.add('basket-success')
+    setTimeout(() => {
+        addBasketBtn[value].classList.remove('basket-success')
+        addBasketBtn[value].classList.add('add-basket')
+    }, 600);
+}
+
+/// ajout au clic sur le bouton panier des items avec leur nom,couleur et id dans un tableau d'objets
 
 for (let i = 0; i < addBasketBtn.length; i++){
-    // console.log(customChoice)
-    
    
     addBasketBtn[i].addEventListener('click', () =>{
         let newEntry = {
@@ -158,27 +184,24 @@ for (let i = 0; i < addBasketBtn.length; i++){
         
         /// vérifie si l'objet qui est sur le point d'être envoyé dans le tableau existe déjà dans celui-ci
 
-        let contain = basketItems.some(elem =>{
+        contain = basketItems.some(elem =>{
             return JSON.stringify(newEntry) === JSON.stringify(elem);
         })
-        
+
+                
         /// l'objet ne sera envoyé que si contain return false
 
         if (!contain){
            basketItems.push(newEntry)
-           itemInstruction[i].innerText = `La peluche ${itemNames[i].innerText} en couleur ${customChoice[i].innerText} a été envoyée au panier`;
-           itemInstruction[i].classList.add('success')
+           basketSucces(i)
         }else{
-             itemInstruction[i].innerText = `La peluche ${itemNames[i].innerText} en couleur ${customChoice[i].innerText} est déjà presente dans le panier`;
-             itemInstruction[i].classList.add('fail')
+             basketFail(i)
         }
         
         console.log(basketItems)
         
-
-        /*CONVERSION DE L'OBJET EN CHAINE DE CARACTERES AFIN DE POUVOIR 
-        L'INTEGRER AU LOCALSTORAGE*/
-        localStorage.clear();
+        /*conversion de l'objet en chaine de caractères afin de pouvoir
+        l'intégrer comme valeur au localstorage sur la clé basket*/ 
         localStorage.setItem('basket', JSON.stringify(basketItems))
     })
 }

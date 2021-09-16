@@ -214,15 +214,15 @@
         top: 14px;
     
 
-    &:hover{
+        &:hover{
         cursor: pointer;
-    }
+        }
 
-    &:active{
-        transform: scale(0.8);
-    }
+        &:active{
+            transform: scale(0.8);
+        }
 
-    &::after{
+        &::after{
         position: absolute;
         content: "\f07a";
         left: 50%;
@@ -232,6 +232,6 @@
         font-weight: 900;
         font-size: 1.5rem;
         
-    }
+        }
     }
 }
