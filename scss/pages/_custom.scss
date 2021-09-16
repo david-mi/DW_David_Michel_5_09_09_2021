@@ -34,8 +34,8 @@
     text-align: center;
     display: grid;
     opacity: 0;
-    grid-template-columns: auto auto repeat(3, 1fr);
-    grid-template-rows: 60px auto 60px;
+    grid-template-columns: auto auto 1fr auto 1fr;
+    grid-template-rows: 1fr 2fr 1fr;
     grid-template-areas:
     "name price . instruction ."
     "link link previous custom next"
@@ -43,7 +43,7 @@
     @media screen and (max-width: 700px) {
         height: 500px;
         grid-template-columns: repeat(4, 1fr);
-        grid-template-rows: 60px auto 25px auto;
+        grid-template-rows: 60px auto auto auto;
         grid-template-areas:
         "name name  price price"
         "link link link link "

@@ -6,6 +6,7 @@ fetch(apiTeddies).then((response)=>{
 /// AFFICHAGE DE LA PREMIERE COULEUR DISPONIBLE POUR CHAQUE PRODUIT CHOISIT
  let colorNb = 0;
  let customList = document.querySelector('.custom__list');
+ chosingText = `Choisissez votre couleur de peluche et ajoutez-la au panier`
  
 //// AFFICHAGE D'UN MESSAGE SI AUCUN ITEM N'A ETE CHOISI 
 
@@ -35,7 +36,7 @@ if (localStorage.length == 0){
             <h2 class="custom__item--name">${data[i].name}</h2>
             <strong class="custom__item--price">${data[i].price}€</strong>
             <a class="custom__item--link" href="${data[i].imageUrl}"><img class="custom__item--picture" src="${data[i].imageUrl}"></a>
-            <span class="instruction">Veuillez choisir votre couleur</span>
+            <span class="instruction">${chosingText}</span>
             <div class="custom-choice" id="${data[i]._id}">${data[i].colors[colorNb]}</div>
             <button type="submit" class="custom-next"></button>
             <button type="submit" class="custom-previous"></button>
@@ -51,25 +52,7 @@ if (localStorage.length == 0){
 // / POUVOIR SELECTIONNER LA COULEUR DE SON CHOIX SELON L'OURS CHOISI
 
 let customChoice = document.querySelectorAll('.custom-choice');
-// const nextColor = (d,j) =>{
-//     if (colorNb < d.colors.length - 1){
-//         colorNb += 1;
-//     }
-//     else{
-//         colorNb = 0;
-//     }
-//     customChoice[j].innerText = d.colors[colorNb]
-// } 
 
-// const prevColor = (d,j) =>{
-//     if (colorNb > 0){
-//         colorNb -= 1;
-//     }
-//     else{
-//         colorNb = d.colors.length - 1;
-//     }
-//     customChoice[j].innerText = d.colors[colorNb]
-// }
 
 /// COULEUR SUIVANTE
 
@@ -82,7 +65,8 @@ for (let d of data){
         if (d._id == customChoice[j].id){
             
             nextBtn[j].addEventListener('click', () =>{
-            
+                itemInstruction[j].innerText = chosingText
+                itemInstruction[j].classList.remove('success', 'fail')
                 if (colorNb < d.colors.length - 1){
                     colorNb += 1;
                 }
@@ -101,13 +85,16 @@ for (let d of data){
 let previousBtn = document.querySelectorAll('.custom-previous');
 
 
+
 for (let d of data){
+
     for (let j = 0; j < nextBtn.length; j += 1){
 
         if (d._id == customChoice[j].id){
 
         previousBtn[j].addEventListener('click', () =>{
-            
+            itemInstruction[j].innerText = chosingText
+            itemInstruction[j].classList.remove('success', 'fail')
             if (colorNb > 0){
                 colorNb -= 1;
             }
@@ -129,30 +116,31 @@ let itemNames = document.querySelectorAll('.custom__item--name');
 ///////// ITERATION PARMI LES BOUTONS DE SUPPRESSION
 for (let i = 0; i < deleteBtn.length; i++){
     
-//// EVENEMENT AU CLIC SUR UN DES BOUTONS SUPPRIMER
+    //// EVENEMENT AU CLIC SUR UN DES BOUTONS SUPPRIMER
     deleteBtn[i].addEventListener('click',() =>{
     lists[i].remove()
 
-//// ITERATION DANS LE LOCALSTORAGE
-    for (let [key, value] of Object.entries(localStorage)){
+    //// ITERATION DANS LE LOCALSTORAGE
+        for (let [key, value] of Object.entries(localStorage)){
         
-/// SI LA VALEUR ID DE L'ITEM CLIQUE EST LA MEME QUE CELLE DU LOCAL STORAGE ON SUPPRIME DU LOCAL STORAGE
-        if (customChoice[i].id == value){
+            /// SI LA VALEUR ID DE L'ITEM CLIQUE EST LA MEME QUE CELLE DU LOCAL STORAGE ON SUPPRIME DU LOCAL STORAGE
+            if (customChoice[i].id == value){
             localStorage.removeItem(itemNames[i].innerText)
+            }
         }
-    }
 
-/// CHANGEMENT DU TITRE H1 SI TOUS LES PRODUITS ONT ETE SUPPRIMES
+        /// CHANGEMENT DU TITRE H1 SI TOUS LES PRODUITS ONT ETE SUPPRIMES
         if (localStorage.length == 0){
         customEmpty();
         }
+
     })
 }
 
 ////////////   AJOUT DES ITEMS AU PANIER
  
-let addBasketBtn = document.querySelectorAll('.add-basket')
-let multipleClr = 0;
+let addBasketBtn = document.querySelectorAll('.add-basket');
+let itemInstruction = document.querySelectorAll('.instruction');
 let basketItems = [];
 
 //// AJOUT AU CLIC SUR LE BOUTON PANIER DES ITEMS AVEC LEUR COULEUR DANS UN TABLEAU D'OBJETS
@@ -162,17 +150,39 @@ for (let i = 0; i < addBasketBtn.length; i++){
     
    
     addBasketBtn[i].addEventListener('click', () =>{
-        basketItems.push({
+        let newEntry = {
             name: itemNames[i].innerText,
             id : customChoice[i].id,
             color : customChoice[i].innerText
-        },)
+        }
+        
+        /// vérifie si l'objet qui est sur le point d'être envoyé dans le tableau existe déjà dans celui-ci
+
+        let contain = basketItems.some(elem =>{
+            return JSON.stringify(newEntry) === JSON.stringify(elem);
+        })
+        
+        /// l'objet ne sera envoyé que si contain return false
+
+        if (!contain){
+           basketItems.push(newEntry)
+           itemInstruction[i].innerText = `La peluche ${itemNames[i].innerText} en couleur ${customChoice[i].innerText} a été envoyée au panier`;
+           itemInstruction[i].classList.add('success')
+        }else{
+             itemInstruction[i].innerText = `La peluche ${itemNames[i].innerText} en couleur ${customChoice[i].innerText} est déjà presente dans le panier`;
+             itemInstruction[i].classList.add('fail')
+        }
+        
+        console.log(basketItems)
+        
 
         /*CONVERSION DE L'OBJET EN CHAINE DE CARACTERES AFIN DE POUVOIR 
         L'INTEGRER AU LOCALSTORAGE*/
+        localStorage.clear();
         localStorage.setItem('basket', JSON.stringify(basketItems))
     })
 }
+
 
 
 
