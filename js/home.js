@@ -5,10 +5,12 @@ fetch(apiTeddies).then((response)=>{
     let list = document.querySelector('.products__list');
     let lists = document.querySelectorAll('.list__item');
     
-    /// ITERATION DANS LE TABLEAU DES OURSONS //
+    ////////// AFFICHAGE DES ITEMS DE L'API DANS LE DOM //////////
 
+    // itération dans le localstorage
     for (let i = 0; i < data.length; i++){
-    //   console.log(data[i])
+        
+        // affichage dans le dom des objets de l'api
         list.innerHTML += `
         <li class="list__item">
                 <h2 class="list__item--name">${data[i].name}</h2>
@@ -18,8 +20,9 @@ fetch(apiTeddies).then((response)=>{
             <button type="submit" id="${i}"class="add-product">
         </li>`
 
-        /// PERMET DE CONSERVER LE BOUTON SUPPRIMER APRES AVOIR FERME LA PAGE SI L'ITEM A ETE AJOUTE DANS LE LOCAL STORAGE///
-
+        
+        /* conservation du bouton supprimer après rechargement de la page pour les items déjà 
+        présent dans le localstorage */
         for (let [key, value] of Object.entries(localStorage)) {
             
             if (value == data[i]._id){

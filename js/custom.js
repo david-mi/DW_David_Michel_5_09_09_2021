@@ -2,34 +2,41 @@ fetch(apiTeddies).then((response)=>{
     return response.json();
 }).then((data)=>{
 
-/// AFFICHAGE DE LA PREMIERE COULEUR DISPONIBLE POUR CHAQUE PRODUIT CHOISIT
- let colorNb = 0;
- let customList = document.querySelector('.custom__list');
- chosingText = `Choisissez votre couleur de peluche et ajoutez-la au panier`
- 
-//// AFFICHAGE D'UN MESSAGE SI AUCUN ITEM N'A ETE CHOISI 
+    
+    
+//// changement du titre principal dans le dom si aucun item à été choisi au préalable
+    const customEmpty = () =>{
+        document.querySelector('.main-title').innerText =`Vous n'avez sélectionné aucun produits`; 
+    } 
+    
+/* fonction pour vérifier la présence d'items ajoutés au localstorage pour la personnalisation
+et afficher un message dans le dom si la condition est vraie */ 
+    const checkEmpty = () =>{
+        if (basketItemvalue !== null && localStorage.length === 1 | localStorage.length === 0){
+            customEmpty();
+        }
+    }
+    
+    checkEmpty();
+    
+///////////// AFFICHER LES ITEMS CHOISI DE L'API DANS LE DOM ////////////////////
+    
+     let colorNb = 0;
+     let customList = document.querySelector('.custom__list');
+     let chosingText = `Choisissez votre couleur de peluche et ajoutez-la au panier`
+     
 
-const customEmpty = () =>{
-   document.querySelector('.main-title').innerText =`Vous n'avez sélectionné aucun produits`; 
-} 
-
-if (localStorage.length == 0){
-    customEmpty();
-}
-
-
-/// ITERATION DANS LES DATAS PUIS DANS LE LOCAL STORAGE 
-
+/// itération dans l'api et dans les keys du localstorage
     for (let i = 0; i < data.length; i++){
     //   console.log(data[i])
       for (let [key, value] of Object.entries(localStorage)) {
         
-/// COMPARAISONS DES ID TROUVE DANS LE LOCALSTORAGE AVEC CEUX DU DATA
-// PUIS AFFICHAGE DANS LE DOM DES PRODUITS AJOUTES DANS LE LOCALSTORAGE UNIQUEMENT 
-// AVEC LA PREMIERE COULEUR DISPONIBLE
-        
+
+/* comparaison des des id trouvées dans le localStorage avec les id de l'api */
         if (data[i]._id == value){
-            
+
+            /* affichage dans le dom des produits ayant été ajouté dans le localstorage uniquement
+            avec la première couleur disponible pour chaque produit */
             customList.innerHTML += `
             <li class="custom__item">
             <h2 class="custom__item--name">${data[i].name}</h2>
@@ -48,99 +55,99 @@ if (localStorage.length == 0){
     }
 }
 
-// / POUVOIR SELECTIONNER LA COULEUR DE SON CHOIX SELON L'OURS CHOISI
+////////////////////////////////// SELECTIONNER LA COULEUR DE SON CHOIX SELON L'OURS CHOISI /////////////////////////////
 
 let customChoice = document.querySelectorAll('.custom-choice');
-
-
-/// COULEUR SUIVANTE
-
 let nextBtn = document.querySelectorAll('.custom-next');
+let previousBtn = document.querySelectorAll('.custom-previous');
 
-for (let d of data){
+/* fonction permettant d'afficher dans le dom les instructions demandant
+de sélectionner la couleur de son choix ainsi que le reset de la couleur du message d'erreur/succès */
+const chosingTextResetClr = (value) =>{
+    itemInstruction[value].innerText = chosingText
+    itemInstruction[value].classList.remove('success', 'fail')
+ }
+
+/* fonction permettant de parcourir les différentes couleurs disponibles suite au clic 
+du bouton suivant et de revenir au début si on a exploré toutes les possibilités*/
+
+colorNbNext = (obj, value) =>{
+    if (colorNb < obj.colors.length - 1){
+        colorNb += 1;
+    }
+    else{
+        colorNb = 0;
+    }
+    customChoice[value].innerText = obj.colors[colorNb]
+}
+
+/* fonction permettant de parcourir les différentes couleurs disponibles suite au clic 
+du bouton précédent et de revenir a la fin si on a exploré toutes les possibilités */
+colorNbNext = (obj, value) =>{
+    if (colorNb > 0){
+        colorNb -= 1;
+    }
+    else{
+        colorNb = obj.colors.length - 1;
+    }
+    customChoice[value].innerText = obj.colors[colorNb]
+}
+
+/* double boucle afin d'itérer dans les données de l'api et aussi parmi
+les boutons suivant/précédent de chaque vignette*/
+for (let obj of data){
 
     for (let j = 0; j < nextBtn.length; j += 1){
 
-        if (d._id == customChoice[j].id){
+        if (obj._id == customChoice[j].id){
             
+            /* écoute du clic sur les boutons précédent/suivant et application des fonctions */
             nextBtn[j].addEventListener('click', () =>{
-                itemInstruction[j].innerText = chosingText
-                itemInstruction[j].classList.remove('success', 'fail')
-                if (colorNb < d.colors.length - 1){
-                    colorNb += 1;
-                }
-                else{
-                    colorNb = 0;
-                }
-                customChoice[j].innerText = d.colors[colorNb]
-    
+                chosingTextResetClr(j);
+                colorNbNext(obj, j)
+            })
+
+            previousBtn[j].addEventListener('click', () =>{
+                chosingTextResetClr(j);
+                colorNbNext(obj, j)
             })
         }
     }    
 }
 
-/// COULEUR PRECEDENTE
 
-let previousBtn = document.querySelectorAll('.custom-previous');
+//////////////// SUPPRESSION DES PRODUITS DU DOM ET DU LOCALSTORAGE AU CLIC SUR LA CORBEILLE //////////////////////////////
 
-
-
-for (let d of data){
-
-    for (let j = 0; j < nextBtn.length; j += 1){
-
-        if (d._id == customChoice[j].id){
-
-        previousBtn[j].addEventListener('click', () =>{
-            itemInstruction[j].innerText = chosingText
-            itemInstruction[j].classList.remove('success', 'fail')
-            if (colorNb > 0){
-                colorNb -= 1;
-            }
-            else{
-                colorNb = d.colors.length - 1;
-            }
-            customChoice[j].innerText = d.colors[colorNb]
-
-        })
-    }
-    }  
-}
-
-//////////////// SUPPRESSION DES PRODUITS DU DOM ET DU LOCALSTORAGE AU CLIC SUR LA CORBEILLE
 let deleteBtn = document.querySelectorAll('.delete-custom');
 let lists = document.querySelectorAll('.custom__list li')
 let itemNames = document.querySelectorAll('.custom__item--name');
 
-///////// ITERATION PARMI LES BOUTONS DE SUPPRESSION
+// itération parmi les boutons de suppression
 for (let i = 0; i < deleteBtn.length; i++){
     
-    //// EVENEMENT AU CLIC SUR UN DES BOUTONS SUPPRIMER
+    // suppression de la vignette du dom au clic sur le bouton
     deleteBtn[i].addEventListener('click',() =>{
     lists[i].remove()
 
-    //// ITERATION DANS LE LOCALSTORAGE
+    // itération dans le localstorage
         for (let [key, value] of Object.entries(localStorage)){
         
-            /// SI LA VALEUR ID DE L'ITEM CLIQUE EST LA MEME QUE CELLE DU LOCAL STORAGE ON SUPPRIME DU LOCAL STORAGE
+            /* si la l'id de l'item cliqué est le même que celui du localstorage, on supprime */
             if (customChoice[i].id == value){
             localStorage.removeItem(itemNames[i].innerText)
             }
         }
 
-        /// CHANGEMENT DU TITRE H1 SI TOUS LES PRODUITS ONT ETE SUPPRIMES
-        if (localStorage.length == 0){
-        customEmpty();
-        }
-
+        /// changement du titre principal si tous les produits ont été enlevés
+        checkEmpty();
     })
 }
 
-////////////   AJOUT DES ITEMS AU PANIER
+/////////////////////////////   AJOUT DES ITEMS AU PANIER ///////////////////////////////////////
  
 let addBasketBtn = document.querySelectorAll('.add-basket');
 let itemInstruction = document.querySelectorAll('.instruction');
-console.log(basketItems)
+// console.log(basketItems)
 
 /* fonction pour animer l'icône du panier et ajouter un message coloré
 lorsque l'ajout à été réussi */
@@ -187,9 +194,8 @@ for (let i = 0; i < addBasketBtn.length; i++){
         contain = basketItems.some(elem =>{
             return JSON.stringify(newEntry) === JSON.stringify(elem);
         })
-
-                
-        /// l'objet ne sera envoyé que si contain return false
+     
+        /// l'objet ne sera envoyé que si contain retourne false
 
         if (!contain){
            basketItems.push(newEntry)
@@ -198,7 +204,7 @@ for (let i = 0; i < addBasketBtn.length; i++){
              basketFail(i)
         }
         
-        console.log(basketItems)
+        // console.log(basketItems)
         
         /*conversion de l'objet en chaine de caractères afin de pouvoir
         l'intégrer comme valeur au localstorage sur la clé basket*/ 
