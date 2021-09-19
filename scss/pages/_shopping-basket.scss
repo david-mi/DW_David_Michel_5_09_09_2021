@@ -2,6 +2,7 @@
     padding: 20px;
 }
 .basket__item{
+    position: relative;
     height: 150px;
     display: grid;
     margin-bottom: 20px;
@@ -52,4 +53,57 @@
         grid-area: total;
     }
 
+}
+
+.form__container{
+    @include display-flex ($flow: nowrap column, $justify: center, $align: center);
+    padding: 20px;
+    border: 0px;
+
+    .form{
+        width: 80%;
+
+        .label-input-container{
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            grid-template-rows: repeat(2, auto);
+            grid-template-areas: 
+            "label smalltxt ."
+            "input input input";
+        }
+
+        label{
+            grid-area: label;
+        }
+
+        input{
+            grid-area: input;
+            height: 30px;
+            margin-bottom: 20px;
+
+        }
+
+        small{
+            grid-area: smalltxt;
+            text-align: center;
+            align-self: flex-end;
+            height: 18px;
+        }
+
+        &[type = number]{
+            height: 100%;
+        }
+
+        input:focus, input:active{
+            outline: none;
+            border-color: #926CED;
+            
+        }
+
+        #form-submit{
+            padding: 0px 10px;
+        }
+
+    }
 }

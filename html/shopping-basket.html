@@ -21,6 +21,37 @@
         <ul class="basket-list">
         </ul>
     </section> 
+    <fieldset class="form__container">
+        <h2>Vos coordonnées</h2>
+    <form id="form" class="form" action="http://localhost:3000/api/teddies/order" method="POST">
+        <div class="label-input-container form__first--name">
+            <label for="first-name">Votre Nom</label>
+            <input type="text" name="firstname" id="firstName" required>
+            <small></small>
+        </div>
+        <div class="label-input-container form__last--name">
+            <label for="last-name">Votre Prénom</label>
+            <input type="text" name="lastname" id="lastName" required>
+            <small></small>
+        </div>
+        <div class="label-input-container form__address">
+            <label for="address">Votre Adresse</label>
+            <input type="text" name="address" id="address" required>
+            <small></small>
+        </div>
+        <div class="label-input-container form__city">
+            <label for="city">Votre Ville</label>
+            <input type="text" name="city" id="city" required>
+            <small></small>
+        </div>
+        <div class="label-input-container form__mail">
+            <label for="mail">Votre Adresse mail</label>
+            <input type="text" name="mail" id="mail" required>
+            <small></small>
+        </div>
+        <input id="form-submit" type="submit" value="Envoyer">
+    </form>  
+    </fieldset>
     <footer>
 
     </footer>

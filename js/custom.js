@@ -214,6 +214,5 @@ for (let i = 0; i < addBasketBtn.length; i++){
 
 
 
-
 });
 
