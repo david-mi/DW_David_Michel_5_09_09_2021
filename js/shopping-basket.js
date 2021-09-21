@@ -111,7 +111,7 @@ let basketDelBtn = document.querySelectorAll('.delete-basket');
 let basketItem = document.querySelectorAll('.basket__item');
 let basketItemName = document.querySelectorAll('.basket__item--name')
 let basketItemColor = document.querySelectorAll('.basket__item--color')
-let product = []; 
+let products = []; 
 
 //// itération dans les boutons de suppression des items  ////
 for (let i = 0; i < basketDelBtn.length; i += 1){
@@ -128,7 +128,7 @@ for (let i = 0; i < basketDelBtn.length; i += 1){
             storageBasket.splice(j,1)
             productAdd()
             productSplice()
-            localStorage.setItem('product',JSON.stringify(product))
+            localStorage.setItem('products',JSON.stringify(products))
             // console.log(storageBasket)  
             // let storageBasketChange = storageBasket.slice();
             // console.log(storageBasketChange)
@@ -144,23 +144,23 @@ for (let i = 0; i < basketDelBtn.length; i += 1){
 }
 
 
-/// AJOUT DES ID UNIQUES DANS UN TABLEAU PRODUCT ///
+/// AJOUT DES ID UNIQUES DANS UN TABLEAU PRODUCTS ///
 
-/* fonction permettant d'ajouter les id dans le tableau product
+/* fonction permettant d'ajouter les id dans le tableau products
 en un seul exemplaire */
 const productAdd = () =>{
 
     for (let i = 0; i < storageBasket.length; i++){ 
-        if (product.includes(storageBasket[i].id) === false){
-            product.push(storageBasket[i].id) 
+        if (products.includes(storageBasket[i].id) === false){
+            products.push(storageBasket[i].id) 
         }
     }
 }
 
 // const productAdd = (value) =>{
     
-//     if (product.includes(storageBasket[value].id) === false){
-//          product.push(storageBasket[value].id)
+//     if (products.includes(storageBasket[value].id) === false){
+//          products.push(storageBasket[value].id)
         
          
 //     }
@@ -171,11 +171,11 @@ productAdd()
 
 const productSplice = () =>{
   
-    for (let p = 0;  p < product.length; p++){
+    for (let p = 0;  p < products.length; p++){
         
-        let check = storageBasket.some(e => e.id === product[p])
+        let check = storageBasket.some(e => e.id === products[p])
         if (check === false){
-            product.splice(p, 1)
+            products.splice(p, 1)
         }
     }
 }
@@ -191,15 +191,15 @@ let formData = ''
 /// création de l'objet contact
 let contact = {
     firstName: '',
-    secondName: '',
+    lastName: '',
     address: '',
     city: '',
     email: ''
 }
 
 /// regexp ///
-const regexpFirstLast = new RegExp(/[a-zA-Z]/)
-const regexpCity = new RegExp(/[A-Za-z0-9'\.\-\s\,]/)
+const regexpFirstLast = new RegExp(/^[a-zA-Z\s'.-]+$/)
+const regexpAddress= new RegExp(/^[A-Za-z0-9'\.\-\s\,]+$/)
 const regexpEmail = new RegExp(/^((\w[^\W]+)[\.\-]?){1,}\@(([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
 
 /// fonction pour appliquer les regxp et vérifier le nombre de caractères saisi
@@ -210,19 +210,24 @@ const validText = (text, i, regexp) =>{
         formSmall[i].classList.add('fail');
         labelInputContainer[i].classList.remove('check');
         formInput[i].classList.add('fail-bg');
+        formData = null;
+        return false
     }else if (!regexp.test(text)){
         formSmall[i].innerText = 'Saisie incorrecte';
         formSmall[i].classList.add('fail');
         labelInputContainer[i].classList.remove('check');
         formInput[i].classList.add('fail-bg');
         formData = null;
+        return false
         
     }else{
+        /* quand toutes les conditions sont remplies, la variable associée
+        à la partie du formulaire prend la valeur de l'input */
         formSmall[i].innerText = '';
         labelInputContainer[i].classList.add('check');
         formInput[i].classList.remove('fail-bg');
         formData = text;
-        return formData
+        return true
     }
 }
 
@@ -230,19 +235,19 @@ const validText = (text, i, regexp) =>{
 
 for (let i = 0; i < formInput.length; i += 1){
     formInput[i].addEventListener('input', (e) => {
+        
 
         if (formInput[i].id === 'firstName'){
             validText(formInput[i].value, i, regexpFirstLast)
             contact.firstName = formData
         }else if (formInput[i].id === 'lastName'){
-            validText(formInput[i].value, i, regexpFirstLast)
-            contact.secondName =  formData;
-            
+           validText(formInput[i].value, i, regexpFirstLast)
+            contact.lastName =  formData;
         }else if (formInput[i].id === 'address'){
-            validText(formInput[i].value, i, regexpCity)
+            validText(formInput[i].value, i, regexpAddress)
             contact.address = formData;
         }else if(formInput[i].id === 'city'){
-            validText(formInput[i].value, i, regexpCity)
+            validText(formInput[i].value, i, regexpFirstLast)
             contact.city = formData;
         }else if(formInput[i].id === 'mail'){
             validText(formInput[i].value, i, regexpEmail)
@@ -255,17 +260,92 @@ for (let i = 0; i < formInput.length; i += 1){
     
 }
 
-// console.log(product)
-// console.log(contact)
 
-// envoi du tableau product et de l'objet contact
+/* retirer le message d'avertissement au dessus du bouton envoyer quand on clique
+ailleurs que le sur bouton */
+document.body.addEventListener('click', function(e){
+    if (!e.target.classList.contains('send')){
+        submitBtnSmall.innerText = ''
+    }
+})
+
+const formCheck = () =>{
+
+    // transfomation de l'object contact en tableau
+    let contactTab = Object.values(contact)
+    
+    /// utilisation du prototype some() pour voir si contact contient des valeurs vide ou null
+    let contactTabcheck = contactTab.some(e => e === null | e === '')
+    
+    /// si c'est true, message dans le dom indiquant que le formulaire est incomplet
+    if (contactTabcheck === true){
+        console.log('incomplet')
+        submitBtnSmall.innerText = 'Formulaire incomplet'
+        submitBtnSmall.classList.add('fail');
+
+    /// si c'est false, envoi des éléments à l'api et message dans le dom pour dire que c'est envoyé    
+    }else{
+        
+        submitBtnSmall.innerText = 'Formulaire envoyé'
+            submitBtnSmall.classList.remove('fail');
+            postData()
+    }
+
+}
+
+// envoi du tableau products et de l'objet contact
 
 let submitBtn = document.getElementById('form-submit');
+const apiPost = 'http://localhost:3000/api/teddies/order'
+let submitBtnSmall = document.querySelector('.submit-btn-container small')
+
+// success
+
+const successPost = (info) =>{
+    formContainer.innerHTML = ''
+    document.querySelector('.custom').innerHTML =''
+    storageMainTitle.innerText = 'Commande effectuée'
+    console.log(storageBasket)
+    document.querySelector('body').innerHTML = `
+    <section class="confirm__container">
+        <h2 confirm__title>Résumé de votre commande</h2>
+        <article class="confirm__personnal-infos">
+            <h3 class="personnal-infos__title">Infos Personnelles</h3>
+            <ul class="personnal-infos__list-container">
+                <li>Nom : ${info.contact.firstName}</li>
+                <li>Prénom : ${info.contact.lastName}</li>
+                <li>Adresse : ${info.contact.address}</li>
+                <li>Ville : ${info.contact.city}</li>
+                <li>Email : ${info.contact.email}</li>
+                <li>Id de commande: ${info.orderId}</li>
+            </ul>
+        </article>
+        `
+}
+
+postData = () =>{
+    fetch(apiPost, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json' 
+        },
+        
+        body: JSON.stringify({contact, products}),
+        
+    }).then(response => response.json().then((info) => {
+        console.log(info)
+        console.log('gg')
+        successPost(info)
+    })
+        
+
+        )}
 
 submitBtn.addEventListener('click', (e) =>{
     e.preventDefault();
-    product = JSON.parse(localStorage.getItem('product'))
-    console.log(product)
+    products = JSON.parse(localStorage.getItem('products'))
+    formCheck()
+    console.log(products)
     console.log(contact)
     
 })

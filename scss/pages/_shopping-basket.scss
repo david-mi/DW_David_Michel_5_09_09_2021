@@ -107,10 +107,22 @@
             
         }
 
+        .submit-btn-container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .submit-btn-container small{
+            align-self: center;
+            order: 1;
+        }
+
         #form-submit{
             padding: 0px 10px;
             align-self: center;
             margin-top: 20px;
+            order: 2;
         }
 
     }
@@ -123,3 +135,13 @@
     padding-block: 20px;
     background-color: $main-clr;
 }
+
+.confirm__container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    
+  }

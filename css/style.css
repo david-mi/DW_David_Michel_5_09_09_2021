@@ -8,6 +8,7 @@ body {
   font-family: 'Nunito', sans-serif;
   max-width: 1200px;
   margin: auto;
+  height: 100vh;
 }
 
 ul {
@@ -695,10 +696,22 @@ img {
   border-color: #926CED;
 }
 
+.form__container .form .submit-btn-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form__container .form .submit-btn-container small {
+  align-self: center;
+  order: 1;
+}
+
 .form__container .form #form-submit {
   padding: 0px 10px;
   align-self: center;
   margin-top: 20px;
+  order: 2;
 }
 
 .total__price {
@@ -707,5 +720,13 @@ img {
   font-size: 1.5rem;
   padding-block: 20px;
   background-color: #F4E9F0;
+}
+
+.confirm__container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 /*# sourceMappingURL=style.css.map */
