@@ -3,6 +3,7 @@ fetch(apiTeddies).then((response)=>{
 }).then((data)=>{
     
  let formContainer = document.querySelector('.form__container')
+ let totalPrice = document.querySelector('.total__price');
     
 //message d'avertissement si le panier est vide
     let storageMainTitle = document.querySelector('.main-title')
@@ -11,6 +12,7 @@ let storageBasketCheck = () =>{
     if (localStorage.getItem('basket') === null | localStorage.getItem('basket') === '[]'){
         storageMainTitle.innerText = 'Panier Vide';
         formContainer.innerHTML = ''
+        totalPrice.remove()
         localStorage.removeItem('basket');
         return
     }
@@ -26,7 +28,8 @@ storageBasketCheck();
         return
     }
 
-    
+  
+
 //// itération dans le tableau récupéré du storage    
 for (let j of storageBasket){
 
@@ -38,74 +41,171 @@ for (let j of storageBasket){
         
 
         document.querySelector('.basket-list').innerHTML += `
-        <li class="basket__item">
+        <li class="basket__item" id="${i._id}">
             <img class="basket__item--picture" src="${i.imageUrl}">
             <h2 class="basket__item--name">${i.name}</h2>
             <span class="basket__item--color">${j.color}</span>
-            <strong class="basket__item--price">${i.price} €</strong>
+            <strong class="basket__item--price"><span class="single-price">${i.price}</span>€</strong>
             <label class="basket__item--quantity-label">Quantité</label>
             <input class="basket__item--quantity" id="quantity" type="number" min="1" placeholder="quantité">
-            <strong class="basket__item--total">Prix Total : ${i.price} €</strong>
+            <span class="basket__item--total">Prix: <strong class="price-qty">${i.price}</strong> €</span>
             <button type="submit" class="delete-basket">
         </li>`
+        
     }
 
 }
+
+
 
 }
 
 ///// calcul du prix en fonction de la quantité choisie
 
 let inputQty = document.querySelectorAll('.basket__item--quantity');
-let price = document.querySelectorAll('.basket__item--total')
-let basketItemPrice = document.querySelectorAll('.basket__item--price')
+let price = document.querySelectorAll('.price-qty')
+let singlePrice = document.querySelectorAll('.single-price')
 const regExpPrice = /[0-9]+/; 
+let priceTab = []
+let result = 0
+
+
+/// fonction de calcul et d'affichage du prix final dans le DOM
+
+const priceCalc = () =>{
+    const stringToNumber = priceTab.map(Number)
+    let totalPriceValue = stringToNumber.reduce((acc, el) => acc + el)
+    totalPrice.innerText = `Prix total: ${totalPriceValue}€`
+}
+
+/// fonction pour envoyer les prix initiaux dans un tableau
+const finalPrice = (value) =>{
+
+    priceTab.push(price[value].innerText)
+    priceCalc()
+}
+
+/// fonction pour remplacer les prix initiaux dans par les prix multipliés par la quantité choisie
+const finalPriceUpdate = (value, value2) =>{
+    priceTab.splice(value, 1, value2)
+    priceCalc()
+}
 
 
 //// itération dans les différents inputs créés
 for (let j = 0; j < inputQty.length; j += 1){
     inputQty[j].value = 1;
 
-/// utilisation d'un regexp pour garder seulment le prix dans l'innerText et non la monnaie €
-    let initialPrice = price[j].innerText.match(regExpPrice)
-    
+/// envoi des prix initiaux dans un tableau
+// priceTab.push(singlePrice[j].innerText)
+/// affichage du prix total dans le dom
+finalPrice(j)   
 /// écoute de l'input dans le champ de formulaire quantité
     inputQty[j].addEventListener('input', function(){
         
         /// calcul et affichage du prix total en fonction de la quantité spécifiée
-        price[j].innerHTML = `Prix Total : ${this.value * initialPrice} €`
+      price[j].innerText = this.value * singlePrice[j].innerText
+
+      
+      /// mise à jour du prix final dans le DOM
+      finalPriceUpdate(j, price[j].innerText)
 })
 }
 
+
+
 ///// RETIRER DES ELEMENTS DU PANIER /////
+
 let basketDelBtn = document.querySelectorAll('.delete-basket');
 let basketItem = document.querySelectorAll('.basket__item');
 let basketItemName = document.querySelectorAll('.basket__item--name')
 let basketItemColor = document.querySelectorAll('.basket__item--color')
+let product = []; 
 
-console.log(storageBasket)
-
+//// itération dans les boutons de suppression des items  ////
 for (let i = 0; i < basketDelBtn.length; i += 1){
     
+    /// écoute du clic sur chaque boutons de suppression
     basketDelBtn[i].addEventListener('click', () =>{
-        
-    for (let j = 0; j < storageBasket.length; j += 1){
+       
+        // itération dans le tableau storageBasket    
+        for (let j = 0; j < storageBasket.length; j += 1){
 
-        if (storageBasket[j].name === basketItemName[i].innerText && storageBasket[j].color === basketItemColor[i].innerText){
+            // si l'item sélectionné est le même que celui du tableau, suppression du dom et du tableau
+            if (storageBasket[j].name === basketItemName[i].innerText && storageBasket[j].color === basketItemColor[i].innerText){
 
-        storageBasket.splice(j,1)
-        console.log(storageBasket)  
-        // let storageBasketChange = storageBasket.slice();
-        // console.log(storageBasketChange)
-        // storageBasketChange.splice(i, 1);
-        // console.log(storageBasketChange)
-        localStorage.setItem('basket',JSON.stringify(storageBasket))
-        basketItem[i].remove()
-        storageBasketCheck()
-        }
-    }    
+            storageBasket.splice(j,1)
+            productAdd()
+            productSplice()
+            localStorage.setItem('product',JSON.stringify(product))
+            // console.log(storageBasket)  
+            // let storageBasketChange = storageBasket.slice();
+            // console.log(storageBasketChange)
+            // storageBasketChange.splice(i, 1);
+            // console.log(storageBasketChange)
+            localStorage.setItem('basket',JSON.stringify(storageBasket))
+            basketItem[i].remove()
+            finalPriceUpdate(i, null)
+            storageBasketCheck()
+            }
+        }    
     })
 }
+
+
+/// AJOUT DES ID UNIQUES DANS UN TABLEAU PRODUCT ///
+
+
+
+const productAdd = () =>{
+
+    for (let i = 0; i < storageBasket.length; i++){
+        
+        
+    if (product.includes(storageBasket[i].id) === false){
+         product.push(storageBasket[i].id)
+        
+         
+    }
+    }
+
+    
+}
+
+// const productAdd = (value) =>{
+    
+//     if (product.includes(storageBasket[value].id) === false){
+//          product.push(storageBasket[value].id)
+        
+         
+//     }
+    
+// }
+
+productAdd()
+
+
+const productSplice = () =>{
+  
+    for (let p = 0;  p < product.length; p++){
+        
+
+        let check = storageBasket.some(e => e.id === product[p])
+        // console.log(check)
+        if (check === false){
+            // console.log('il manque ' + product[p])
+            product.splice(p, 1)
+            // console.log('spliced ' + product)
+            // console.log(product[p])
+        }
+
+    }
+
+   
+
+}
+
+
 
 
 ////////////////// FORMULAIRE ////////////////////////
@@ -130,14 +230,19 @@ let contact = {
 
 
 /// regexp ///
-const regexpFirstLast = new RegExp(/^[a-z ,.'-]+$/i)
-const regexpCity = new RegExp(/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/)
-const regexpEmail = new RegExp(/^([A-Za-z0-9_\-.])+@/)
+const regexpFirstLast = new RegExp(/[a-zA-Z]/)
+const regexpCity = new RegExp(/[A-Za-z0-9'\.\-\s\,]/)
+const regexpEmail = new RegExp(/^((\w[^\W]+)[\.\-]?){1,}\@(([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
 
 const validText = (text, i, regexp) =>{
     // console.log(text.length)
     
-    if (!regexp.test(text)){
+    if( text.length < 2){
+        formSmall[i].innerText = '2 caractères minimum';
+        formSmall[i].classList.add('fail');
+        labelInputContainer[i].classList.remove('check');
+        formInput[i].classList.add('fail-bg');
+    }else if (!regexp.test(text)){
         formSmall[i].innerText = 'Saisie incorrecte';
         formSmall[i].classList.add('fail');
         labelInputContainer[i].classList.remove('check');
@@ -185,17 +290,18 @@ for (let i = 0; i < formInput.length; i += 1){
     
 }
 
-
+// console.log(product)
+// console.log(contact)
 
 let submitBtn = document.getElementById('form-submit');
 
 submitBtn.addEventListener('click', (e) =>{
     e.preventDefault();
+    product = JSON.parse(localStorage.getItem('product'))
+    console.log(product)
+    console.log(contact)
+    
 })
-
-
-
-
 
 
 

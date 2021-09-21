@@ -60,8 +60,14 @@
     padding: 20px;
     border: 0px;
 
+    .form-title{
+        padding-block: 40px;
+    }
+
     .form{
         width: 80%;
+        display: flex;
+        flex-direction: column;
 
         .label-input-container{
             position: relative;
@@ -103,7 +109,17 @@
 
         #form-submit{
             padding: 0px 10px;
+            align-self: center;
+            margin-top: 20px;
         }
 
     }
+}
+
+.total__price{
+    display: block;
+    text-align: center;
+    font-size: 1.5rem;
+    padding-block: 20px;
+    background-color: $main-clr;
 }

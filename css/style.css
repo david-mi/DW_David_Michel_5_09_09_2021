@@ -651,8 +651,14 @@ img {
   border: 0px;
 }
 
+.form__container .form-title {
+  padding-block: 40px;
+}
+
 .form__container .form {
   width: 80%;
+  display: flex;
+  flex-direction: column;
 }
 
 .form__container .form .label-input-container {
@@ -691,5 +697,15 @@ img {
 
 .form__container .form #form-submit {
   padding: 0px 10px;
+  align-self: center;
+  margin-top: 20px;
+}
+
+.total__price {
+  display: block;
+  text-align: center;
+  font-size: 1.5rem;
+  padding-block: 20px;
+  background-color: #F4E9F0;
 }
 /*# sourceMappingURL=style.css.map */

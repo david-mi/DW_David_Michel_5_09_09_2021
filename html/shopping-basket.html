@@ -20,18 +20,19 @@
     <section class="custom">
         <ul class="basket-list">
         </ul>
+        <strong class="total__price"></strong>
     </section> 
     <fieldset class="form__container">
-        <h2>Vos coordonnées</h2>
+        <h2 class="form-title">Vos coordonnées</h2>
     <form id="form" class="form" action="http://localhost:3000/api/teddies/order" method="POST">
         <div class="label-input-container form__first--name">
             <label for="first-name">Votre Nom</label>
-            <input type="text" name="firstname" id="firstName" required>
+            <input type="text" name="firstname" id="firstName" minlength="2" maxlength="26" required>
             <small></small>
         </div>
         <div class="label-input-container form__last--name">
             <label for="last-name">Votre Prénom</label>
-            <input type="text" name="lastname" id="lastName" required>
+            <input type="text" name="lastname" id="lastName" minlength="2" maxlength="26" required>
             <small></small>
         </div>
         <div class="label-input-container form__address">
