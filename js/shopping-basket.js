@@ -8,11 +8,16 @@ fetch(apiTeddies).then((response)=>{
 //message d'avertissement si le panier est vide
     let storageMainTitle = document.querySelector('.main-title')
 
+// fonction pour check si l'item basket est présent dans le localstorage ou contient quelque chose
 let storageBasketCheck = () =>{
     if (localStorage.getItem('basket') === null | localStorage.getItem('basket') === '[]'){
+
+        // si la condition est remplie, on retire les éléments du dom et on indique que le panier est vide
         storageMainTitle.innerText = 'Panier Vide';
         formContainer.innerHTML = ''
         totalPrice.remove()
+
+        // clear de la clé basket du localstorage si jamais c'est un tableau vide
         localStorage.removeItem('basket');
         return
     }
@@ -22,46 +27,37 @@ storageBasketCheck();
 
 
 // RECUPERATION DE LA CLE BASKET DU LOCAL STORAGE ET RECONVERSION EN OBJET
-    let storageBasket = JSON.parse(localStorage.getItem('basket'));
+let storageBasket = JSON.parse(localStorage.getItem('basket'));
 
-    if (storageBasket === null){
+// si la variable storageBasket est vide on exécute pas les autres fonctions
+if (storageBasket === null){
         return
     }
-
-  
 
 //// itération dans le tableau récupéré du storage    
 for (let j of storageBasket){
 
 /// intération dans les objets de l'API    
-  for (let i of data){  
+    for (let i of data){  
 
-    // Affichages des objets sélectionnés dans le DOM
-    if (i._id === j.id){
-        
-
-        document.querySelector('.basket-list').innerHTML += `
-        <li class="basket__item" id="${i._id}">
-            <img class="basket__item--picture" src="${i.imageUrl}">
-            <h2 class="basket__item--name">${i.name}</h2>
-            <span class="basket__item--color">${j.color}</span>
-            <strong class="basket__item--price"><span class="single-price">${i.price}</span>€</strong>
-            <label class="basket__item--quantity-label">Quantité</label>
-            <input class="basket__item--quantity" id="quantity" type="number" min="1" placeholder="quantité">
-            <span class="basket__item--total">Prix: <strong class="price-qty">${i.price}</strong> €</span>
-            <button type="submit" class="delete-basket">
-        </li>`
-        
+        // Affichages des objets sélectionnés dans le DOM
+        if (i._id === j.id){       
+            document.querySelector('.basket-list').innerHTML += `
+            <li class="basket__item" id="${i._id}">
+                <img class="basket__item--picture" src="${i.imageUrl}">
+                <h2 class="basket__item--name">${i.name}</h2>
+                <span class="basket__item--color">${j.color}</span>
+                <strong class="basket__item--price"><span class="single-price">${i.price}</span>€</strong>
+                <label class="basket__item--quantity-label">Quantité</label>
+                <input class="basket__item--quantity" id="quantity" type="number" min="1" placeholder="quantité">
+                <span class="basket__item--total">Prix: <strong class="price-qty">${i.price}</strong> €</span>
+                <button type="submit" class="delete-basket">
+            </li>`      
+        }
     }
-
-}
-
-
-
 }
 
 ///// calcul du prix en fonction de la quantité choisie
-
 let inputQty = document.querySelectorAll('.basket__item--quantity');
 let price = document.querySelectorAll('.price-qty')
 let singlePrice = document.querySelectorAll('.single-price')
@@ -71,7 +67,6 @@ let result = 0
 
 
 /// fonction de calcul et d'affichage du prix final dans le DOM
-
 const priceCalc = () =>{
     const stringToNumber = priceTab.map(Number)
     let totalPriceValue = stringToNumber.reduce((acc, el) => acc + el)
@@ -96,8 +91,6 @@ const finalPriceUpdate = (value, value2) =>{
 for (let j = 0; j < inputQty.length; j += 1){
     inputQty[j].value = 1;
 
-/// envoi des prix initiaux dans un tableau
-// priceTab.push(singlePrice[j].innerText)
 /// affichage du prix total dans le dom
 finalPrice(j)   
 /// écoute de l'input dans le champ de formulaire quantité
@@ -111,8 +104,6 @@ finalPrice(j)
       finalPriceUpdate(j, price[j].innerText)
 })
 }
-
-
 
 ///// RETIRER DES ELEMENTS DU PANIER /////
 
@@ -155,21 +146,15 @@ for (let i = 0; i < basketDelBtn.length; i += 1){
 
 /// AJOUT DES ID UNIQUES DANS UN TABLEAU PRODUCT ///
 
-
-
+/* fonction permettant d'ajouter les id dans le tableau product
+en un seul exemplaire */
 const productAdd = () =>{
 
-    for (let i = 0; i < storageBasket.length; i++){
-        
-        
-    if (product.includes(storageBasket[i].id) === false){
-         product.push(storageBasket[i].id)
-        
-         
+    for (let i = 0; i < storageBasket.length; i++){ 
+        if (product.includes(storageBasket[i].id) === false){
+            product.push(storageBasket[i].id) 
+        }
     }
-    }
-
-    
 }
 
 // const productAdd = (value) =>{
@@ -184,29 +169,16 @@ const productAdd = () =>{
 
 productAdd()
 
-
 const productSplice = () =>{
   
     for (let p = 0;  p < product.length; p++){
         
-
         let check = storageBasket.some(e => e.id === product[p])
-        // console.log(check)
         if (check === false){
-            // console.log('il manque ' + product[p])
             product.splice(p, 1)
-            // console.log('spliced ' + product)
-            // console.log(product[p])
         }
-
     }
-
-   
-
 }
-
-
-
 
 ////////////////// FORMULAIRE ////////////////////////
 
@@ -216,9 +188,7 @@ let labelInputContainer = document.querySelectorAll('form .label-input-container
 let formEmail = document.querySelector('#mail');
 let formData = ''
 
-
-
-
+/// création de l'objet contact
 let contact = {
     firstName: '',
     secondName: '',
@@ -227,15 +197,13 @@ let contact = {
     email: ''
 }
 
-
-
 /// regexp ///
 const regexpFirstLast = new RegExp(/[a-zA-Z]/)
 const regexpCity = new RegExp(/[A-Za-z0-9'\.\-\s\,]/)
 const regexpEmail = new RegExp(/^((\w[^\W]+)[\.\-]?){1,}\@(([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
 
+/// fonction pour appliquer les regxp et vérifier le nombre de caractères saisi
 const validText = (text, i, regexp) =>{
-    // console.log(text.length)
     
     if( text.length < 2){
         formSmall[i].innerText = '2 caractères minimum';
@@ -258,9 +226,7 @@ const validText = (text, i, regexp) =>{
     }
 }
 
-
-
-
+/// formulaire
 
 for (let i = 0; i < formInput.length; i += 1){
     formInput[i].addEventListener('input', (e) => {
@@ -280,8 +246,7 @@ for (let i = 0; i < formInput.length; i += 1){
             contact.city = formData;
         }else if(formInput[i].id === 'mail'){
             validText(formInput[i].value, i, regexpEmail)
-            contact.email = formData;
-            
+            contact.email = formData; 
         }  
 
         console.log(contact)
@@ -292,6 +257,8 @@ for (let i = 0; i < formInput.length; i += 1){
 
 // console.log(product)
 // console.log(contact)
+
+// envoi du tableau product et de l'objet contact
 
 let submitBtn = document.getElementById('form-submit');
 
