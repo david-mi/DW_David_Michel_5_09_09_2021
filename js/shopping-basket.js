@@ -71,7 +71,10 @@ const priceCalc = () =>{
     const stringToNumber = priceTab.map(Number)
     let totalPriceValue = stringToNumber.reduce((acc, el) => acc + el)
     totalPrice.innerText = `Prix total: ${totalPriceValue}€`
+    return totalPriceValue
 }
+
+
 
 /// fonction pour envoyer les prix initiaux dans un tableau
 const finalPrice = (value) =>{
@@ -157,17 +160,9 @@ const productAdd = () =>{
     }
 }
 
-// const productAdd = (value) =>{
-    
-//     if (products.includes(storageBasket[value].id) === false){
-//          products.push(storageBasket[value].id)
-        
-         
-//     }
-    
-// }
 
 productAdd()
+localStorage.setItem('products',JSON.stringify(products))
 
 const productSplice = () =>{
   
@@ -318,9 +313,11 @@ const successPost = (info) =>{
                 <li>Ville : ${info.contact.city}</li>
                 <li>Email : ${info.contact.email}</li>
                 <li>Id de commande: ${info.orderId}</li>
+                <li>Prix total: €</li>
             </ul>
         </article>
         `
+    localStorage.clear() 
 }
 
 postData = () =>{

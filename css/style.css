@@ -24,6 +24,10 @@ img {
   display: block;
 }
 
+.display {
+  display: none;
+}
+
 .success {
   color: green;
 }
