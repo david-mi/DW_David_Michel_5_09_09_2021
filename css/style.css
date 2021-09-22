@@ -173,7 +173,7 @@ img {
   background-color: transparent;
 }
 
-.remove-product::after, .delete-basket::after {
+.remove-product::after, .delete-basket::after, .delete-custom::after {
   content: "\f1f8";
 }
 
@@ -204,12 +204,14 @@ img {
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
   background-color: #F4E9F0;
-  grid-template-areas: "logo list" "logo list";
+  grid-template-areas: "logo list"
+ "logo list";
 }
 
 @media screen and (max-width: 700px) {
   .header {
-    grid-template-areas: "logo logo" "list list";
+    grid-template-areas: "logo logo"
+ "list list";
   }
 }
 
@@ -309,19 +311,26 @@ img {
   place-items: center;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: 1fr auto 1fr;
-  grid-template-areas: "link name . . ." "link . desc desc ." "link . . .  price";
+  grid-template-areas: "link name . . ."
+ "link . desc desc ."
+ "link . . .  price";
 }
 
 @media screen and (max-width: 880px) {
   .products .list__item {
-    grid-template-areas: "link . name name ." "link . desc desc ." "link . price price .";
+    grid-template-areas: "link . name name ."
+ "link . desc desc ."
+ "link . price price .";
   }
 }
 
 @media screen and (max-width: 700px) {
   .products .list__item {
     grid-template-rows: 1fr auto auto 1fr;
-    grid-template-areas: "name name name name name" "link link link link link" ". desc desc desc ." ". . price . .";
+    grid-template-areas: "name name name name name"
+ "link link link link link"
+ ". desc desc desc ."
+ ". . price . .";
     gap: 20px 0px;
   }
 }
@@ -434,7 +443,9 @@ img {
   opacity: 0;
   grid-template-columns: auto auto 1fr auto 1fr;
   grid-template-rows: 1fr 2fr 1fr;
-  grid-template-areas: "name price . instruction ." "link link previous custom next" "link link . . .";
+  grid-template-areas: "name price . instruction ."
+ "link link previous custom next"
+ "link link . . .";
 }
 
 @media screen and (max-width: 700px) {
@@ -442,7 +453,10 @@ img {
     height: 500px;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: 60px auto auto auto;
-    grid-template-areas: "name name  price price" "link link link link " "instruction instruction instruction instruction" "previous custom custom next";
+    grid-template-areas: "name name  price price"
+ "link link link link "
+ "instruction instruction instruction instruction"
+ "previous custom custom next";
   }
 }
 
@@ -605,7 +619,9 @@ img {
   border: 2px solid black;
   grid-template-rows: 1fr minmax(0, 1fr) 1fr;
   grid-template-columns: repeat(2, 1fr) minmax(0, 1fr) 1fr;
-  grid-template-areas: "photo name label label " "photo color quantity quantity" "photo price total total";
+  grid-template-areas: "photo name label label "
+ "photo color quantity quantity"
+ "photo price total total";
 }
 
 .basket__item--picture {
@@ -671,7 +687,8 @@ img {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   grid-template-rows: repeat(2, auto);
-  grid-template-areas: "label smalltxt ." "input input input";
+  grid-template-areas: "label smalltxt ."
+ "input input input";
 }
 
 .form__container .form label {

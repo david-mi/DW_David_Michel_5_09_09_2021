@@ -10,7 +10,8 @@ fetch(apiTeddies).then((response)=>{
 
 // fonction pour check si l'item basket est présent dans le localstorage ou contient quelque chose
 let storageBasketCheck = () =>{
-    if (localStorage.getItem('basket') === null | localStorage.getItem('basket') === '[]'){
+    if (localStorage.getItem('basket') === null | localStorage.getItem('basket') === '[]' 
+    | localStorage.getItem('products') === '[]'){
 
         // si la condition est remplie, on retire les éléments du dom et on indique que le panier est vide
         storageMainTitle.innerText = 'Panier Vide';
@@ -19,6 +20,7 @@ let storageBasketCheck = () =>{
 
         // clear de la clé basket du localstorage si jamais c'est un tableau vide
         localStorage.removeItem('basket');
+        localStorage.removeItem('products')
         return
     }
 }
@@ -76,17 +78,20 @@ const priceCalc = () =>{
 
 
 
+
 /// fonction pour envoyer les prix initiaux dans un tableau
 const finalPrice = (value) =>{
 
     priceTab.push(price[value].innerText)
     priceCalc()
+    
 }
 
 /// fonction pour remplacer les prix initiaux dans par les prix multipliés par la quantité choisie
 const finalPriceUpdate = (value, value2) =>{
     priceTab.splice(value, 1, value2)
     priceCalc()
+    
 }
 
 
@@ -94,17 +99,17 @@ const finalPriceUpdate = (value, value2) =>{
 for (let j = 0; j < inputQty.length; j += 1){
     inputQty[j].value = 1;
 
-/// affichage du prix total dans le dom
-finalPrice(j)   
-/// écoute de l'input dans le champ de formulaire quantité
-    inputQty[j].addEventListener('input', function(){
-        
-        /// calcul et affichage du prix total en fonction de la quantité spécifiée
-      price[j].innerText = this.value * singlePrice[j].innerText
+    /// affichage du prix total dans le dom
+    finalPrice(j)   
+    /// écoute de l'input dans le champ de formulaire quantité
+        inputQty[j].addEventListener('input', function(){
+            
+            /// calcul et affichage du prix total en fonction de la quantité spécifiée
+        price[j].innerText = this.value * singlePrice[j].innerText
 
-      
-      /// mise à jour du prix final dans le DOM
-      finalPriceUpdate(j, price[j].innerText)
+        
+        /// mise à jour du prix final dans le DOM
+        finalPriceUpdate(j, price[j].innerText)
 })
 }
 
@@ -248,8 +253,6 @@ for (let i = 0; i < formInput.length; i += 1){
             validText(formInput[i].value, i, regexpEmail)
             contact.email = formData; 
         }  
-
-        console.log(contact)
         
     } )
     
@@ -305,7 +308,6 @@ const successPost = (info) =>{
     <section class="confirm__container">
         <h2 confirm__title>Résumé de votre commande</h2>
         <article class="confirm__personnal-infos">
-            <h3 class="personnal-infos__title">Infos Personnelles</h3>
             <ul class="personnal-infos__list-container">
                 <li>Nom : ${info.contact.firstName}</li>
                 <li>Prénom : ${info.contact.lastName}</li>

@@ -7,7 +7,7 @@ fetch(apiTeddies).then((response)=>{
     
     ////////// AFFICHAGE DES ITEMS DE L'API DANS LE DOM //////////
 
-    // itération dans le localstorage
+    // itération dans les data
     for (let i = 0; i < data.length; i++){
         
         // affichage dans le dom des objets de l'api
@@ -36,25 +36,24 @@ fetch(apiTeddies).then((response)=>{
 
     let button = document.querySelectorAll('.products__list button');
     lists = document.querySelectorAll('.list__item');
+
+    // fonctions pour ajouter ou retirer des éléments du localStorage
+    const localIdDel = j => localStorage.removeItem(data[j].name);   
+    const localIdSet = j => localStorage.setItem(data[j].name, data[j]._id);   
+       
     for (let j = 0; j < button.length; j++){
     
     /// TOGGLE AU CLIC DE L'AJOUT OU L'ENLEVEMENT DES PELUCHES DANS LE LOCAL STORAGE
-
     // let localIdGet = localStorage.getItem(data[j].name);
-    const localIdDel = () => {
-     localStorage.removeItem(data[j].name);   
-    }
-    const localIdSet = () => {
-     localStorage.setItem(data[j].name, data[j]._id);   
-    }
+    
         button[j].addEventListener('click',() =>{
             button[j].classList.toggle('add-product')
             button[j].classList.toggle('remove-product')
 
             if (button[j].classList.contains('remove-product')){
-                localIdSet();
+                localIdSet(j);
             }else {
-                localIdDel()
+                localIdDel(j)
             }
         }) 
     }   
