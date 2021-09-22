@@ -139,11 +139,16 @@ for (let i = 0; i < deleteBtn.length; i++){
 const addBasketBtn = document.querySelectorAll('.add-basket');
 const itemInstruction = document.querySelectorAll('.instruction');
 
+/// fonction pour afficher la réussite ou l'échec d'ajout au panier
+const showInstruction = (value, text) =>{
+    itemInstruction[value].innerText = `La peluche ${itemNames[value].innerText} en couleur ${customChoice[value].innerText} ${text}`;
+}
+
 /* fonction pour animer l'icône du panier et ajouter un message coloré
 lorsque l'ajout à été réussi */
 const basketFail = (value) =>{
 
-    itemInstruction[value].innerText = `La peluche ${itemNames[value].innerText} en couleur ${customChoice[value].innerText} est déjà presente dans le panier`;
+    showInstruction(value, 'est déjà présente dans le panier')
     itemInstruction[value].classList.add('fail')
     addBasketBtn[value].classList.add('basket-fail')
     setTimeout(() => {
@@ -154,7 +159,7 @@ const basketFail = (value) =>{
 /* fonction pour animer l'icône du panier et ajouter un message coloré
 lorsque l'ajout échoué */
 const basketSucces = (value) =>{
-    itemInstruction[value].innerText = `La peluche ${itemNames[value].innerText} en couleur ${customChoice[value].innerText} a été envoyée au panier`;
+    showInstruction(value, 'a été ajoutée au panier')
     itemInstruction[value].classList.add('success');
     addBasketBtn[value].classList.remove('add-basket')
     addBasketBtn[value].classList.add('basket-success')
