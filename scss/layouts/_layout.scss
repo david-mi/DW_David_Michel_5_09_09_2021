@@ -1,65 +1,78 @@
-.header{
-    padding-block: 20px;
+.header {
+    padding: 20px;
     display: grid;
     place-items: center;
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
     background-color: $main-clr;
     grid-template-areas:
-    "logo list"
-    "logo list";
-    @media screen and (max-width: 700px){
+        "logo list"
+        "logo list";
+    @media screen and (max-width: 700px) {
         grid-template-areas:
-        "logo logo"
-        "list list";
+            "logo logo"
+            "list list";
     }
 
-    &__logo{
+    &__logo {
         grid-area: logo;
         display: block;
         max-height: 100px;
-        
     }
 
-    &__list{
+    &__list {
         grid-area: list;
         display: flex;
         align-items: center;
         gap: 50px;
-
-        &--products{
-            font-size: 2rem;
-            text-transform: uppercase;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        @media screen and (max-width: 700px) {
+            gap: 20px;
         }
 
-        &--index{
-            font-size: 2rem;
-            text-transform: uppercase;
-        }
-
-        &--basket{
+        &--products,
+        .header__list--index {
             position: relative;
         }
-    
-        &--basket::before{
+
+        &--products::before,
+        .header__list--index::before {
+            content: "";
+            position: absolute;
+            bottom: 0px;
+            height: 3px;
+            width: 100%;
+            background-color: black;
+            left: 0px;
+            transform: scaleX(0%);
+            transition: ease-out 200ms;
+        }
+
+        &--products:hover::before,
+        .header__list--index:hover::before {
+            transform: scaleX(100%);
+        }
+
+        &--basket {
+            position: relative;
+        }
+
+        &--basket::before {
             content: "\f07a";
             font-family: "Font Awesome 5 Free";
             font-weight: 900;
             font-size: 2rem;
         }
 
-        .basket-link{
+        .basket-link {
             position: absolute;
-            inset:0px;
-         }
-
+            inset: 0px;
+        }
     }
-
-   
-
 }
 
-.main-title{
+.main-title {
     padding-block: 20px;
     text-align: center;
 }

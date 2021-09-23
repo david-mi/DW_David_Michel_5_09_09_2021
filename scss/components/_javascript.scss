@@ -1,100 +1,106 @@
-.display{
+.display {
     display: none;
 }
 
-.success{
+.success {
     color: $success-clr;
 }
 
-.fail{
+.fail {
     color: $fail-clr;
 }
 
-.success-bg{
+.success-bg {
     background-color: lighten($success-clr, 50%);
 }
 
-.fail-bg{
+.fail-bg {
     background-color: lighten($fail-clr, 20%);
 }
 
-
-@keyframes basket-success{
-    50%{
-        transform: scale(1.2);
-        
-    }
-}
-
-@keyframes basket-fail{
-    25%{
+@keyframes header-basket {
+    25% {
         transform: rotate(20deg);
-        
     }
 
-    30%, 100%{
-        color:red;
+    30%,
+    100% {
+        color: $success-clr;
     }
 
-    50%{
-        
+    50% {
         transform: rotate(0deg);
     }
 
-    75%{
+    75% {
         transform: rotate(-20deg);
     }
 }
 
-.basket-fail{
-    
-    animation: basket-fail 400ms linear;
-    
+.headerB-anim {
+    animation: header-basket 600ms linear 2;
 }
 
+@keyframes basket-success {
+    50% {
+        transform: scale(1.2);
+    }
+}
 
+@keyframes basket-fail {
+    25% {
+        transform: rotate(20deg);
+    }
 
-.basket-success{
+    30%,
+    100% {
+        color: $fail-clr;
+    }
+
+    50% {
+        transform: rotate(0deg);
+    }
+
+    75% {
+        transform: rotate(-20deg);
+    }
+}
+
+.basket-fail {
+    animation: basket-fail 400ms linear;
+}
+
+.basket-success {
+    grid-area: addBasket;
     animation: basket-success 600ms linear;
-    position: absolute;
+    justify-self: flex-end;
+    align-self: center;
     width: 33px;
     border-radius: 50%;
     aspect-ratio: 1/1;
     border: 0px;
     background-color: transparent;
-    right: 20px;
-    top: 14px;
 
-
-    &:hover{
-    cursor: pointer;
+    &::after {
+        color: $success-clr;
+        position: absolute;
+        content: "\f217";
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        font-size: 1.5rem;
     }
-
-    &:active{
-    transform: scale(0.8);
-    }
-
-    &::after{
-    color: $success-clr;
-    position: absolute;
-    content: "\f217";
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    font-size: 1.5rem;
-    
-}
 }
 
-.check::after{
+.check::after {
     position: absolute;
     content: "\f14a";
     top: 50%;
     transform: translateY(-50%);
     right: 10px;
-   
+
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     font-size: 1.5rem;

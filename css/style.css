@@ -44,6 +44,26 @@ img {
   background-color: #ff6666;
 }
 
+@keyframes header-basket {
+  25% {
+    transform: rotate(20deg);
+  }
+  30%,
+  100% {
+    color: green;
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-20deg);
+  }
+}
+
+.headerB-anim {
+  animation: header-basket 600ms linear 2;
+}
+
 @keyframes basket-success {
   50% {
     transform: scale(1.2);
@@ -54,7 +74,8 @@ img {
   25% {
     transform: rotate(20deg);
   }
-  30%, 100% {
+  30%,
+  100% {
     color: red;
   }
   50% {
@@ -70,23 +91,15 @@ img {
 }
 
 .basket-success {
+  grid-area: addBasket;
   animation: basket-success 600ms linear;
-  position: absolute;
+  justify-self: flex-end;
+  align-self: center;
   width: 33px;
   border-radius: 50%;
   aspect-ratio: 1/1;
   border: 0px;
   background-color: transparent;
-  right: 20px;
-  top: 14px;
-}
-
-.basket-success:hover {
-  cursor: pointer;
-}
-
-.basket-success:active {
-  transform: scale(0.8);
 }
 
 .basket-success::after {
@@ -117,7 +130,7 @@ img {
 .delete-custom,
 .add-basket,
 .delete-basket {
-  position: absolute;
+  position: relative;
   width: 33px;
   border-radius: 50%;
   aspect-ratio: 1/1;
@@ -155,11 +168,6 @@ img {
   cursor: pointer;
 }
 
-.add-product, .remove-product {
-  right: 20px;
-  top: 20px;
-}
-
 .add-product {
   background-color: #4e4e4e;
 }
@@ -169,49 +177,31 @@ img {
   color: white;
 }
 
-.remove-product, .delete-basket {
+.remove-product,
+.delete-basket,
+.delete-custom {
   background-color: transparent;
 }
 
-.remove-product::after, .delete-basket::after, .delete-custom::after {
+.remove-product::after,
+.delete-basket::after,
+.delete-custom::after {
   content: "\f1f8";
 }
 
-.delete-custom, .delete-basket {
-  right: 20px;
-}
-
-@media screen and (max-width: 700px) {
-  .delete-custom, .delete-basket {
-    bottom: auto;
-    top: 14px;
-    left: 20px;
-  }
-}
-
-.delete-custom {
-  bottom: 20px;
-}
-
-.delete-basket {
-  top: 20px;
-}
-
 .header {
-  padding-block: 20px;
+  padding: 20px;
   display: grid;
   place-items: center;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
   background-color: #F4E9F0;
-  grid-template-areas: "logo list"
- "logo list";
+  grid-template-areas: "logo list" "logo list";
 }
 
 @media screen and (max-width: 700px) {
   .header {
-    grid-template-areas: "logo logo"
- "list list";
+    grid-template-areas: "logo logo" "list list";
   }
 }
 
@@ -226,16 +216,37 @@ img {
   display: flex;
   align-items: center;
   gap: 50px;
-}
-
-.header__list--products {
-  font-size: 2rem;
+  font-size: 1.5rem;
   text-transform: uppercase;
 }
 
-.header__list--index {
-  font-size: 2rem;
-  text-transform: uppercase;
+@media screen and (max-width: 700px) {
+  .header__list {
+    gap: 20px;
+  }
+}
+
+.header__list--products,
+.header__list .header__list--index {
+  position: relative;
+}
+
+.header__list--products::before,
+.header__list .header__list--index::before {
+  content: "";
+  position: absolute;
+  bottom: 0px;
+  height: 3px;
+  width: 100%;
+  background-color: black;
+  left: 0px;
+  transform: scaleX(0%);
+  transition: ease-out 200ms;
+}
+
+.header__list--products:hover::before,
+.header__list .header__list--index:hover::before {
+  transform: scaleX(100%);
 }
 
 .header__list--basket {
@@ -304,33 +315,31 @@ img {
   z-index: 1;
   border-radius: 20px;
   overflow: hidden;
-  min-height: 250px;
+  height: 240px;
   margin-bottom: 20px;
+  padding: 10px;
   box-shadow: 0px 0px 5px #494949;
   display: grid;
   place-items: center;
+  column-gap: 20px;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: 1fr auto 1fr;
-  grid-template-areas: "link name . . ."
- "link . desc desc ."
- "link . . .  price";
+  grid-template-areas: "link link name . delIndex" "link link . desc ." "link link . .  price";
 }
 
 @media screen and (max-width: 880px) {
   .products .list__item {
-    grid-template-areas: "link . name name ."
- "link . desc desc ."
- "link . price price .";
+    grid-template-columns: 4fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: "link . name name delIndex" "link . desc desc ." "link . price price .";
   }
 }
 
 @media screen and (max-width: 700px) {
   .products .list__item {
+    height: 400px;
+    grid-template-columns: repeat(5, 1fr);
     grid-template-rows: 1fr auto auto 1fr;
-    grid-template-areas: "name name name name name"
- "link link link link link"
- ". desc desc desc ."
- ". . price . .";
+    grid-template-areas: "name name . delIndex delIndex" "link link link link link" "desc desc desc desc desc" ". price price price .";
     gap: 20px 0px;
   }
 }
@@ -346,7 +355,7 @@ img {
 }
 
 .products .list__item::before {
-  content: '';
+  content: "";
   inset: 0px;
   position: absolute;
   z-index: -10;
@@ -368,13 +377,18 @@ img {
   font-size: 1.5rem;
   font-weight: 900;
   text-align: center;
-  padding-block: 10px;
 }
 
 .products .list__item--description {
   grid-area: desc;
   text-align: justify;
   word-break: break-all;
+}
+
+@media screen and (max-width: 700px) {
+  .products .list__item--description {
+    padding-inline: 20px;
+  }
 }
 
 .products .list__item--price {
@@ -384,16 +398,10 @@ img {
 .products .list__item--link {
   grid-area: link;
   position: relative;
-  height: 250px;
-  width: 300px;
+  height: 100%;
+  width: 100%;
   display: block;
   overflow: hidden;
-}
-
-@media screen and (max-width: 700px) {
-  .products .list__item--link {
-    width: 80%;
-  }
 }
 
 .products .list__item--picture {
@@ -405,6 +413,13 @@ img {
   transition: 500ms linear;
   animation: picture-anim 300ms 1s linear forwards;
   opacity: 0;
+}
+
+.products .list__item .remove-product,
+.products .list__item .add-product {
+  grid-area: delIndex;
+  justify-self: flex-end;
+  align-self: flex-start;
 }
 
 .custom__list {
@@ -430,38 +445,35 @@ img {
 }
 
 .custom__item {
-  height: 350px;
+  height: 300px;
   position: relative;
   z-index: 1;
   border-radius: 20px;
   overflow: hidden;
   margin-bottom: 20px;
-  animation: shadows 300ms 1s ease-in-out forwards ,opacity 600ms linear forwards;
+  padding: 10px;
+  animation: shadows 300ms 1s ease-in-out forwards, opacity 600ms linear forwards;
   box-shadow: 0px 0px 0px #494949;
   text-align: center;
   display: grid;
+  place-items: center;
   opacity: 0;
   grid-template-columns: auto auto 1fr auto 1fr;
-  grid-template-rows: 1fr 2fr 1fr;
-  grid-template-areas: "name price . instruction ."
- "link link previous custom next"
- "link link . . .";
+  grid-template-rows: 1fr 4fr 1fr;
+  grid-template-areas: "name price . instruction addBasket" "link link previous custom next" "link link . . removeCustom";
 }
 
 @media screen and (max-width: 700px) {
   .custom__item {
     height: 500px;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: auto repeat(2, 1fr) auto;
     grid-template-rows: 60px auto auto auto;
-    grid-template-areas: "name name  price price"
- "link link link link "
- "instruction instruction instruction instruction"
- "previous custom custom next";
+    grid-template-areas: "removeCustom name  price addBasket" "link link link link " "instruction instruction instruction instruction" "previous custom custom next";
   }
 }
 
 .custom__item::before {
-  content: '';
+  content: "";
   animation: choice 1s linear forwards;
   position: absolute;
   inset: 0px;
@@ -474,6 +486,7 @@ img {
 .custom__item--link {
   grid-area: link;
   max-height: 300px;
+  height: 100%;
   width: 300px;
   display: block;
   overflow: hidden;
@@ -498,7 +511,6 @@ img {
 
 .custom__item--name {
   grid-area: name;
-  background-color: #F4E9F0;
   display: flex;
   flex-flow: nowrap row;
   justify-content: center;
@@ -506,7 +518,6 @@ img {
 }
 
 .custom__item--price {
-  background-color: #F4E9F0;
   grid-area: price;
   display: flex;
   flex-flow: nowrap row;
@@ -531,7 +542,8 @@ img {
   }
 }
 
-.custom__item .custom-next, .custom__item .custom-previous {
+.custom__item .custom-next,
+.custom__item .custom-previous {
   align-self: center;
   justify-self: center;
   width: 50px;
@@ -542,11 +554,13 @@ img {
   background-color: #F4E9F0;
 }
 
-.custom__item .custom-next:active, .custom__item .custom-previous:active {
+.custom__item .custom-next:active,
+.custom__item .custom-previous:active {
   transform: scale(0.8);
 }
 
-.custom__item .custom-next:hover, .custom__item .custom-previous:hover {
+.custom__item .custom-next:hover,
+.custom__item .custom-previous:hover {
   cursor: pointer;
 }
 
@@ -558,7 +572,8 @@ img {
   grid-area: next;
 }
 
-.custom__item .custom-next::before, .custom__item .custom-previous::before {
+.custom__item .custom-next::before,
+.custom__item .custom-previous::before {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -569,11 +584,11 @@ img {
 }
 
 .custom__item .custom-next::before {
-  content: '\f35a';
+  content: "\f35a";
 }
 
 .custom__item .custom-previous::before {
-  content: '\f359';
+  content: "\f359";
 }
 
 .custom__item .instruction {
@@ -582,9 +597,29 @@ img {
   align-self: center;
 }
 
+@media screen and (max-width: 700px) {
+  .custom__item .instruction {
+    padding-inline: 20px;
+  }
+}
+
+.custom__item .delete-custom {
+  grid-area: removeCustom;
+  justify-self: flex-end;
+  align-self: flex-end;
+}
+
+@media screen and (max-width: 700px) {
+  .custom__item .delete-custom {
+    justify-self: flex-start;
+    align-self: center;
+  }
+}
+
 .custom__item .add-basket {
-  right: 20px;
-  top: 14px;
+  grid-area: addBasket;
+  justify-self: flex-end;
+  align-self: center;
 }
 
 .custom__item .add-basket:hover {
@@ -618,17 +653,31 @@ img {
   place-items: center;
   border: 2px solid black;
   grid-template-rows: 1fr minmax(0, 1fr) 1fr;
-  grid-template-columns: repeat(2, 1fr) minmax(0, 1fr) 1fr;
-  grid-template-areas: "photo name label label "
- "photo color quantity quantity"
- "photo price total total";
+  column-gap: 20px;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  grid-template-areas: "photo name label deleteBasket " "photo color quantity ." "photo . total .";
+}
+
+@media screen and (max-width: 700px) {
+  .basket__item {
+    padding: 10px;
+    height: 200px;
+    grid-template-rows: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr) auto;
+    grid-template-areas: "name name . deleteBasket " "photo photo label label" "photo photo quantity quantity" "photo photo total total" "color color total total";
+  }
 }
 
 .basket__item--picture {
   grid-area: photo;
-  width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+@media screen and (max-width: 700px) {
+  .basket__item--picture {
+    width: 100%;
+  }
 }
 
 .basket__item--name {
@@ -645,7 +694,7 @@ img {
 
 .basket__item--quantity {
   grid-area: quantity;
-  width: 30%;
+  width: 40%;
   text-align: center;
   font-weight: 600;
   font-size: 2rem;
@@ -661,6 +710,10 @@ img {
 
 .basket__item--total {
   grid-area: total;
+}
+
+.basket__item .delete-basket {
+  grid-area: deleteBasket;
 }
 
 .form__container {
@@ -682,13 +735,18 @@ img {
   flex-direction: column;
 }
 
+@media screen and (max-width: 700px) {
+  .form__container .form {
+    width: 90%;
+  }
+}
+
 .form__container .form .label-input-container {
   position: relative;
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   grid-template-rows: repeat(2, auto);
-  grid-template-areas: "label smalltxt ."
- "input input input";
+  grid-template-areas: "label smalltxt ." "input input input";
 }
 
 .form__container .form label {
@@ -708,13 +766,14 @@ img {
   height: 18px;
 }
 
-.form__container .form[type=number] {
+.form__container .form[type="number"] {
   height: 100%;
 }
 
-.form__container .form input:focus, .form__container .form input:active {
+.form__container .form input:focus,
+.form__container .form input:active {
   outline: none;
-  border-color: #926CED;
+  border-color: #926ced;
 }
 
 .form__container .form .submit-btn-container {

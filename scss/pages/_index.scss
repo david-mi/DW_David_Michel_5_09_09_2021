@@ -1,91 +1,91 @@
-
-@keyframes slide-right{
-    70%{
-       transform: translateX(-5%)  
+@keyframes slide-right {
+    70% {
+        transform: translateX(-5%);
     }
-   
-    100%{
-        transform: translateX(0%)
+
+    100% {
+        transform: translateX(0%);
     }
 }
 
-@keyframes slide-left{
-    70%{
-        transform: translateX(5%)  
-     }
-    
-     100%{
-         transform: translateX(0%)
-     }
-}
-
-@keyframes picture-anim{
-    0%{
-        filter: blur(10px)
+@keyframes slide-left {
+    70% {
+        transform: translateX(5%);
     }
 
+    100% {
+        transform: translateX(0%);
+    }
+}
 
-    
+@keyframes picture-anim {
+    0% {
+        filter: blur(10px);
+    }
 
-    100%{
-        filter :blur(0px);
+    100% {
+        filter: blur(0px);
         opacity: 1;
     }
-
 }
 
-.products{
+.products {
     padding: 20px;
 
-    &__list--container{
+    &__list--container {
         display: flex;
         @include display-flex($flow: column wrap, $align: center);
     }
 
-    .list__item{
+    .list__item {
         position: relative;
         z-index: 1;
         border-radius: 20px;
         overflow: hidden;
-        min-height: 250px;
+        height: 240px;
         margin-bottom: 20px;
+        padding: 10px;
         box-shadow: 0px 0px 5px rgb(73, 73, 73);
         display: grid;
         place-items: center;
+        column-gap: 20px;
         grid-template-columns: repeat(5, 1fr);
         grid-template-rows: 1fr auto 1fr;
         grid-template-areas:
-        "link name . . ."
-        "link . desc desc ."
-        "link . . .  price";
-        @media screen and (max-width: 880px){
-            grid-template-areas: 
-            "link . name name ."
-            "link . desc desc ."
-            "link . price price .";
+            "link link name . delIndex"
+            "link link . desc ."
+            "link link . .  price";
+        @media screen and (max-width: 880px) {
+            grid-template-columns: 4fr 1fr 1fr 1fr 1fr;
+            grid-template-areas:
+                "link . name name delIndex"
+                "link . desc desc ."
+                "link . price price .";
         }
-        @media screen and (max-width: 700px){
+        @media screen and (max-width: 700px) {
+            height: 400px;
+            grid-template-columns: repeat(5, 1fr);
             grid-template-rows: 1fr auto auto 1fr;
-            grid-template-areas: 
-            "name name name name name"
-            "link link link link link"
-            ". desc desc desc ."
-            ". . price . .";  
+            grid-template-areas:
+                "name name . delIndex delIndex"
+                "link link link link link"
+                "desc desc desc desc desc"
+                ". price price price .";
             gap: 20px 0px;
         }
 
-        &:nth-child(even){
+        &:nth-child(even) {
             transform: translateX(100%);
-            animation: slide-right 800ms cubic-bezier(.35,.62,.38,.97) forwards;
+            animation: slide-right 800ms cubic-bezier(0.35, 0.62, 0.38, 0.97) forwards;
         }
 
-        &:nth-child(odd){
+        &:nth-child(odd) {
             transform: translateX(-100%);
-            animation: slide-left 800ms cubic-bezier(.35,.62,.38,.97) forwards;
+            animation: slide-left 800ms cubic-bezier(0.35, 0.62, 0.38, 0.97) forwards;
         }
 
-        &::before{
-            content: '';
+        &::before {
+            content: "";
             inset: 0px;
             position: absolute;
             z-index: -10;
@@ -94,58 +94,59 @@
             transition: 400ms ease-in-out;
         }
 
-        &:hover::before{
+        &:hover::before {
             opacity: 1;
         }
 
-        &:hover .list__item--picture{
+        &:hover .list__item--picture {
             transform: scale(1.1);
         }
 
-        &--name{
+        &--name {
             grid-area: name;
             font-size: 1.5rem;
             font-weight: 900;
             text-align: center;
-            padding-block: 10px;
         }
 
-        &--description{
+        &--description {
             grid-area: desc;
-            text-align:justify;
-            word-break: break-all; 
-        }
-
-        &--price{
-            grid-area: price; 
-        }
-
-        &--link{
-            grid-area: link;
-            position: relative;
-            height: 250px;
-            width: 300px;
-            display: block;
-            overflow: hidden;
-            @media screen and (max-width: 700px){
-                width: 80%;
+            text-align: justify;
+            word-break: break-all;
+            @media screen and(max-width: 700px) {
+                padding-inline: 20px;
             }
         }
 
-        
-        &--picture{
+        &--price {
+            grid-area: price;
+        }
+
+        &--link {
+            grid-area: link;
+            position: relative;
+            height: 100%;
+            width: 100%;
+            display: block;
+            overflow: hidden;
+        }
+
+        &--picture {
             display: block;
             width: 100%;
             height: 100%;
             object-fit: cover;
             z-index: 1;
             transition: 500ms linear;
-            animation: picture-anim 300ms 1s linear forwards ;
+            animation: picture-anim 300ms 1s linear forwards;
             opacity: 0;
-            
         }
-        
-      }
+
+        .remove-product,
+        .add-product {
+            grid-area: delIndex;
+            justify-self: flex-end;
+            align-self: flex-start;
+        }
+    }
 }
-
-
