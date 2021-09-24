@@ -1,66 +1,106 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <script src="https://kit.fontawesome.com/d85eb10b10.js" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="/css/style.css" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Panier</title>
-    </head>
-    <body>
-        <header class="header">
-            <img class="header__logo" src="../images/logo-orinoco.png" alt="Orinoco, une entreprise de commerce en ligne" />
-            <ul class="header__list">
-                <li class="header__list--index">
-                    <a href="../index.html">Accueil</a>
-                </li>
-                <li class="header__list--products">
-                    <a href="custom.html">custom</a>
-                </li>
-            </ul>
-        </header>
-        <h1 class="main-title">Panier</h1>
-        <div class="custom">
-            <ul class="basket-list"></ul>
-            <strong class="total__price"></strong>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script
+      src="https://kit.fontawesome.com/d85eb10b10.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="../css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panier</title>
+  </head>
+  <body>
+    <header class="header">
+      <img
+        class="header__logo"
+        src="../images/logo-orinoco.png"
+        alt="Orinoco, une entreprise de commerce en ligne"
+      />
+      <ul class="header__list">
+        <li class="header__list--index">
+          <a href="../index.html">Accueil</a>
+        </li>
+        <li class="header__list--products">
+          <a href="custom.html">custom</a>
+        </li>
+      </ul>
+    </header>
+    <h1 class="main-title">Panier</h1>
+    <div class="custom">
+      <ul class="basket-list"></ul>
+      <strong class="total__price"></strong>
+    </div>
+    <fieldset class="form__container">
+      <h2 class="form-title">Vos coordonnées</h2>
+      <form
+        id="form"
+        class="form"
+        action="http://localhost:3000/api/teddies/order"
+        method="POST"
+      >
+        <div class="label-input-container form__first--name">
+          <label for="firstName">Votre Nom</label>
+          <input
+            value="David"
+            type="text"
+            name="firstname"
+            id="firstName"
+            minlength="2"
+            maxlength="26"
+            required
+          />
+          <small></small>
         </div>
-        <fieldset class="form__container">
-            <h2 class="form-title">Vos coordonnées</h2>
-            <form id="form" class="form" action="http://localhost:3000/api/teddies/order" method="POST">
-                <div class="label-input-container form__first--name">
-                    <label for="firstName">Votre Nom</label>
-                    <input value="David" type="text" name="firstname" id="firstName" minlength="2" maxlength="26" required />
-                    <small></small>
-                </div>
-                <div class="label-input-container form__last--name">
-                    <label for="lastName">Votre Prénom</label>
-                    <input value="Michel" type="text" name="lastname" id="lastName" minlength="2" maxlength="26" required />
-                    <small></small>
-                </div>
-                <div class="label-input-container form__address">
-                    <label for="address">Votre Adresse</label>
-                    <input value="Le bourg 14400" type="text" name="address" id="address" required />
-                    <small></small>
-                </div>
-                <div class="label-input-container form__city">
-                    <label for="city">Votre Ville</label>
-                    <input value="Ranchy" type="text" name="city" id="city" required />
-                    <small></small>
-                </div>
-                <div class="label-input-container form__mail">
-                    <label for="mail">Votre Adresse mail</label>
-                    <input value="hello@gmail.com" type="text" name="mail" id="mail" required />
-                    <small></small>
-                </div>
-                <div class="submit-btn-container">
-                    <input id="form-submit" class="send" type="submit" value="Envoyer" />
-                    <small></small>
-                </div>
-            </form>
-        </fieldset>
-        <footer></footer>
-        <script src="../js/script.js"></script>
-        <script src="../js/shopping-basket.js"></script>
-    </body>
+        <div class="label-input-container form__last--name">
+          <label for="lastName">Votre Prénom</label>
+          <input
+            value="Michel"
+            type="text"
+            name="lastname"
+            id="lastName"
+            minlength="2"
+            maxlength="26"
+            required
+          />
+          <small></small>
+        </div>
+        <div class="label-input-container form__address">
+          <label for="address">Votre Adresse</label>
+          <input
+            value="Le bourg 14400"
+            type="text"
+            name="address"
+            id="address"
+            required
+          />
+          <small></small>
+        </div>
+        <div class="label-input-container form__city">
+          <label for="city">Votre Ville</label>
+          <input value="Ranchy" type="text" name="city" id="city" required />
+          <small></small>
+        </div>
+        <div class="label-input-container form__mail">
+          <label for="mail">Votre Adresse mail</label>
+          <input
+            value="hello@gmail.com"
+            type="text"
+            name="mail"
+            id="mail"
+            required
+          />
+          <small></small>
+        </div>
+        <div class="submit-btn-container">
+          <input id="form-submit" class="send" type="submit" value="Envoyer" />
+          <small></small>
+        </div>
+      </form>
+    </fieldset>
+    <footer></footer>
+    <script src="../js/script.js"></script>
+    <script src="../js/shopping-basket.js"></script>
+  </body>
 </html>
