@@ -261,7 +261,7 @@ ailleurs que le sur bouton */
     // envoi du tableau products et de l'objet contact
 
     const submitBtn = document.getElementById('form-submit');
-    const apiPost = 'https://ab-p5-api.herokuapp.com/api/teddies';
+    const apiPost = 'http://localhost:3000/api/teddies';
     const submitBtnSmall = document.querySelector(
       '.submit-btn-container small'
     );
