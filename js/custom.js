@@ -1,8 +1,8 @@
 fetch(apiTeddies)
-    .then((response) => {
+    .then(response => {
         return response.json();
     })
-    .then((data) => {
+    .then(data => {
         /* on vérifie au chargement de la page si storageBasket (clé basket récupérée du localStorage) 
         est null. si oui, storageBasket devient un tableau*/
         if (storageBasket == null) {
@@ -10,12 +10,12 @@ fetch(apiTeddies)
         }
 
         //// changement du titre principal dans le dom si aucun item à été choisi au préalable
-        const customEmpty = () => (document.querySelector(".main-title").innerText = `Vous n'avez sélectionné aucun produits`);
+        const customEmpty = () => (document.querySelector('.main-title').innerText = `Vous n'avez sélectionné aucun produits`);
 
         /* fonction pour vérifier la présence d'items ajoutés au localstorage pour la personnalisation
         et afficher un message dans le dom si la condition est vraie */
         const checkEmpty = () => {
-            if ((localStorage.getItem("basket") !== null && localStorage.length === 1) | (localStorage.length === 0)) {
+            if ((localStorage.getItem('basket') !== null && localStorage.length === 1) | (localStorage.length === 0)) {
                 customEmpty();
             }
         };
@@ -25,7 +25,7 @@ fetch(apiTeddies)
         ///////////// AFFICHER LES ITEMS CHOISI DE L'API DANS LE DOM ////////////////////
 
         let colorNb = 0;
-        const customList = document.querySelector(".custom__list");
+        const customList = document.querySelector('.custom__list');
         let chosingText = `Choisissez votre couleur de peluche et ajoutez-la au panier`;
 
         /// itération dans l'api et dans les keys du localstorage
@@ -53,15 +53,15 @@ fetch(apiTeddies)
 
         ////////////////////////////////// SELECTIONNER LA COULEUR DE SON CHOIX SELON L'OURS CHOISI /////////////////////////////
 
-        const customChoice = document.querySelectorAll(".custom-choice");
-        const nextBtn = document.querySelectorAll(".custom-next");
-        const previousBtn = document.querySelectorAll(".custom-previous");
+        const customChoice = document.querySelectorAll('.custom-choice');
+        const nextBtn = document.querySelectorAll('.custom-next');
+        const previousBtn = document.querySelectorAll('.custom-previous');
 
         /* fonction permettant d'afficher dans le dom les instructions demandant
         de sélectionner la couleur de son choix ainsi que le reset de la couleur du message d'erreur/succès */
-        const chosingTextResetClr = (value) => {
+        const chosingTextResetClr = value => {
             itemInstruction[value].innerText = chosingText;
-            itemInstruction[value].classList.remove("success", "fail");
+            itemInstruction[value].classList.remove('success', 'fail');
         };
 
         /* fonction permettant de parcourir les différentes couleurs disponibles suite au clic 
@@ -92,12 +92,12 @@ fetch(apiTeddies)
             for (let j = 0; j < nextBtn.length; j += 1) {
                 if (obj._id == customChoice[j].id) {
                     /* écoute du clic sur les boutons précédent/suivant et application des fonctions */
-                    nextBtn[j].addEventListener("click", () => {
+                    nextBtn[j].addEventListener('click', () => {
                         chosingTextResetClr(j);
                         colorNbNext(obj, j);
                     });
 
-                    previousBtn[j].addEventListener("click", () => {
+                    previousBtn[j].addEventListener('click', () => {
                         chosingTextResetClr(j);
                         colorNbPrevious(obj, j);
                     });
@@ -107,15 +107,15 @@ fetch(apiTeddies)
 
         //////////////// SUPPRESSION DES PRODUITS DU DOM ET DU LOCALSTORAGE AU CLIC SUR LA CORBEILLE //////////////////////////////
 
-        const deleteBtn = document.querySelectorAll(".delete-custom");
-        const lists = document.querySelectorAll(".custom__list li");
-        const itemNames = document.querySelectorAll(".custom__item--name");
-        const headerBasket = document.querySelector(".header__list--basket");
+        const deleteBtn = document.querySelectorAll('.delete-custom');
+        const lists = document.querySelectorAll('.custom__list li');
+        const itemNames = document.querySelectorAll('.custom__item--name');
+        const headerBasket = document.querySelector('.header__list--basket');
 
         // itération parmi les boutons de suppression
         for (let i = 0; i < deleteBtn.length; i++) {
             // suppression de la vignette du dom au clic sur le bouton
-            deleteBtn[i].addEventListener("click", () => {
+            deleteBtn[i].addEventListener('click', () => {
                 lists[i].remove();
 
                 // itération dans le localstorage
@@ -133,8 +133,8 @@ fetch(apiTeddies)
 
         /////////////////////////////   AJOUT DES ITEMS AU PANIER ///////////////////////////////////////
 
-        const addBasketBtn = document.querySelectorAll(".add-basket");
-        const itemInstruction = document.querySelectorAll(".instruction");
+        const addBasketBtn = document.querySelectorAll('.add-basket');
+        const itemInstruction = document.querySelectorAll('.instruction');
 
         /// fonction pour afficher la réussite ou l'échec d'ajout au panier
         const showInstruction = (value, text) => {
@@ -143,33 +143,33 @@ fetch(apiTeddies)
 
         /* fonction pour animer l'icône du panier et ajouter un message coloré
         lorsque l'ajout à échoué*/
-        const basketFail = (value) => {
-            showInstruction(value, "est déjà présente dans le panier");
-            itemInstruction[value].classList.add("fail");
-            addBasketBtn[value].classList.add("basket-fail");
+        const basketFail = value => {
+            showInstruction(value, 'est déjà présente dans le panier');
+            itemInstruction[value].classList.add('fail');
+            addBasketBtn[value].classList.add('basket-fail');
             setTimeout(() => {
-                addBasketBtn[value].classList.remove("basket-fail");
+                addBasketBtn[value].classList.remove('basket-fail');
             }, 400);
         };
 
         /* fonction pour animer l'icône du panier et ajouter un message coloré
         lorsque l'ajout à réussi */
-        const basketSucces = (value) => {
-            showInstruction(value, "a été ajoutée au panier");
-            itemInstruction[value].classList.add("success");
-            addBasketBtn[value].classList.remove("add-basket");
-            addBasketBtn[value].classList.add("basket-success");
-            headerBasket.classList.add("headerB-anim");
+        const basketSucces = value => {
+            showInstruction(value, 'a été ajoutée au panier');
+            itemInstruction[value].classList.add('success');
+            addBasketBtn[value].classList.remove('add-basket');
+            addBasketBtn[value].classList.add('basket-success');
+            headerBasket.classList.add('headerB-anim');
             setTimeout(() => {
-                headerBasket.classList.remove("headerB-anim");
-                addBasketBtn[value].classList.remove("basket-success");
-                addBasketBtn[value].classList.add("add-basket");
+                headerBasket.classList.remove('headerB-anim');
+                addBasketBtn[value].classList.remove('basket-success');
+                addBasketBtn[value].classList.add('add-basket');
             }, 600);
         };
 
         /// ajout au clic sur le bouton panier des items avec leur nom,couleur et id dans un tableau d'objets
         for (let i = 0; i < addBasketBtn.length; i++) {
-            addBasketBtn[i].addEventListener("click", () => {
+            addBasketBtn[i].addEventListener('click', () => {
                 let newEntry = {
                     name: itemNames[i].innerText,
                     id: customChoice[i].id,
@@ -177,7 +177,7 @@ fetch(apiTeddies)
                 };
 
                 /// vérifie si l'objet qui est sur le point d'être envoyé dans le tableau existe déjà dans celui-ci
-                contain = storageBasket.some((elem) => {
+                contain = storageBasket.some(elem => {
                     return JSON.stringify(newEntry) === JSON.stringify(elem);
                 });
 
@@ -192,7 +192,7 @@ fetch(apiTeddies)
 
                 /*conversion de l'objet en chaine de caractères afin de pouvoir
                 l'intégrer comme valeur au localstorage sur la clé basket*/
-                localStorage.setItem("basket", JSON.stringify(storageBasket));
+                localStorage.setItem('basket', JSON.stringify(storageBasket));
             });
         }
     });

@@ -1,164 +1,217 @@
 .basket-list {
-    padding: 20px;
+  padding: 20px;
 }
 .basket__item {
-    position: relative;
-    height: 150px;
-    display: grid;
-    margin-bottom: 20px;
-    place-items: center;
-    border: 2px solid black;
-    grid-template-rows: 1fr minmax(0, 1fr) 1fr;
-    column-gap: 20px;
-    grid-template-columns: auto auto minmax(0, 1fr) auto;
+  overflow: hidden;
+  position: relative;
+  height: 150px;
+  display: grid;
+  margin-bottom: 20px;
+  place-items: center;
+  border: 2px solid black;
+  grid-template-rows: 1fr minmax(0, 1fr) 1fr;
+  column-gap: 20px;
+  grid-template-columns: auto 1fr 1fr auto;
+  grid-template-areas:
+    "photo name label deleteBasket"
+    "photo color quantity ."
+    "photo . total .";
+  @media screen and (max-width: 700px) {
+    padding: 10px;
+    height: 200px;
+    grid-template-rows: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr) auto;
     grid-template-areas:
-        "photo name label deleteBasket "
-        "photo color quantity ."
-        "photo . total .";
+      "name name . deleteBasket"
+      "photo photo label label"
+      "photo photo quantity quantity"
+      "photo photo total total"
+      "color color total total";
+  }
+  &--picture {
+    grid-area: photo;
+    width: 220px;
+    height: 100%;
+    object-fit: cover;
     @media screen and (max-width: 700px) {
-        padding: 10px;
-        height: 200px;
-        grid-template-rows: repeat(5, 1fr);
-        grid-template-columns: repeat(3, 1fr) auto;
-        grid-template-areas:
-            "name name . deleteBasket "
-            "photo photo label label"
-            "photo photo quantity quantity"
-            "photo photo total total"
-            "color color total total";
+      width: 100%;
     }
-    &--picture {
-        grid-area: photo;
-        height: 100%;
-        object-fit: cover;
-        @media screen and (max-width: 700px) {
-            width: 100%;
-        }
-    }
+  }
 
-    &--name {
-        grid-area: name;
-    }
+  &--name {
+    grid-area: name;
+  }
 
-    &--color {
-        grid-area: color;
-    }
+  &--color {
+    grid-area: color;
+  }
 
-    &--price {
-        grid-area: price;
-    }
+  &--price {
+    grid-area: price;
+  }
 
-    &--quantity {
-        grid-area: quantity;
-        width: 40%;
-        text-align: center;
-        font-weight: 600;
-        font-size: 2rem;
+  &--quantity {
+    grid-area: quantity;
+    width: 40%;
+    text-align: center;
+    font-weight: 600;
+    font-size: 2rem;
 
-        &::-webkit-inner-spin-button {
-            opacity: 1;
-        }
+    &::-webkit-inner-spin-button {
+      opacity: 1;
     }
+  }
 
-    &--quantity-label {
-        grid-area: label;
-    }
+  &--quantity-label {
+    grid-area: label;
+  }
 
-    &--total {
-        grid-area: total;
-    }
+  &--total {
+    grid-area: total;
+  }
 
-    .delete-basket {
-        grid-area: deleteBasket;
-    }
+  .delete-basket {
+    grid-area: deleteBasket;
+  }
 }
 
 .form__container {
-    @include display-flex($flow: nowrap column, $justify: center, $align: center);
-    padding: 20px;
-    border: 0px;
+  @include display-flex($flow: nowrap column, $justify: center, $align: center);
+  padding: 20px;
+  border: 0px;
 
-    .form-title {
-        padding-block: 40px;
+  .form-title {
+    padding-block: 40px;
+  }
+
+  .form {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+
+    .label-input-container {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      grid-template-rows: repeat(2, auto);
+      grid-template-areas:
+        "label smalltxt ."
+        "input input input";
     }
 
-    .form {
-        width: 80%;
-        display: flex;
-        flex-direction: column;
-        @media screen and (max-width: 700px) {
-            width: 90%;
-        }
-
-        .label-input-container {
-            position: relative;
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            grid-template-rows: repeat(2, auto);
-            grid-template-areas:
-                "label smalltxt ."
-                "input input input";
-        }
-
-        label {
-            grid-area: label;
-        }
-
-        input {
-            grid-area: input;
-            height: 30px;
-            margin-bottom: 20px;
-        }
-
-        small {
-            grid-area: smalltxt;
-            text-align: center;
-            align-self: flex-end;
-            height: 18px;
-        }
-
-        &[type="number"] {
-            height: 100%;
-        }
-
-        input:focus,
-        input:active {
-            outline: none;
-            border-color: #926ced;
-        }
-
-        .submit-btn-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .submit-btn-container small {
-            align-self: center;
-            order: 1;
-        }
-
-        #form-submit {
-            padding: 0px 10px;
-            align-self: center;
-            margin-top: 20px;
-            order: 2;
-        }
+    label {
+      grid-area: label;
     }
+
+    input {
+      grid-area: input;
+      height: 30px;
+      margin-bottom: 20px;
+      padding-left: 5px;
+    }
+
+    small {
+      grid-area: smalltxt;
+      text-align: center;
+      align-self: flex-end;
+      height: 18px;
+    }
+
+    &[type="number"] {
+      height: 100%;
+    }
+
+    input:focus,
+    input:active {
+      outline: none;
+      border-color: #926ced;
+    }
+
+    .submit-btn-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .submit-btn-container small {
+      align-self: center;
+      order: 1;
+    }
+
+    #form-submit {
+      padding: 0px 10px;
+      align-self: center;
+      margin-top: 20px;
+      order: 2;
+    }
+  }
 }
 
 .total__price {
-    display: block;
-    text-align: center;
-    font-size: 1.5rem;
-    padding-block: 20px;
-    background-color: $main-clr;
+  display: block;
+  text-align: center;
+  font-size: 1.5rem;
+  padding-block: 20px;
+  background-color: $main-clr;
+}
+
+@keyframes inf-rotate {
+  0% {
+    transform: scale(0.5) rotate(0deg);
+  }
+
+  50% {
+    transform: scale(1) rotate(360deg);
+  }
+  100% {
+    transform: scale(0.5) rotate(720deg);
+  }
 }
 
 .confirm__container {
-    height: 100%;
+  height: 100%;
+  display: flex;
+  gap: 50px;
+  padding: 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  @media screen and (max-width: 700px) {
+    padding-top: 200px;
+  }
+
+  &::before {
+    animation: inf-rotate 3s linear infinite both;
+    content: "";
+    background-color: hotpink;
+    width: 50px;
+    border-radius: 0px 0px 5px rgb(82, 82, 82);
+    aspect-ratio: 1/1;
+    position: absolute;
+    top: 100px;
+  }
+
+  &::after {
+    content: "";
+    animation: inf-rotate 3s linear infinite both;
+    background-color: black;
+    width: 10px;
+    aspect-ratio: 1/1;
+    position: absolute;
+    top: 120px;
+  }
+
+  article {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+  }
+
+  .btn-home {
+    background-color: $main-clr;
+    padding: 10px 20px;
+    box-shadow: 0px 0px 5px rgb(48, 48, 48);
+  }
 }
