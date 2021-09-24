@@ -1,4 +1,4 @@
-let apiTeddies = 'http://localhost:3000/api/teddies';
+let apiTeddies = 'https://ab-p5-api.herokuapp.com/api/teddies';
 
 // / récupérer la valeur de basket dans le localstorage puis reconversion en format tableau
 
