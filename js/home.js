@@ -16,7 +16,7 @@ fetch(apiTeddies)
     // itération dans les data
     for (let i = 0; i < data.length; i++) {
       // création d'une url vers custom contenant un id propre
-      let idUrl = new URL(`html/custom.html?id=${data[i]._id}`,urlPath);
+      changePath(data, i);
       // affichage dans le dom des objets de l'api
       list.innerHTML += `
         <li class="list__item">
