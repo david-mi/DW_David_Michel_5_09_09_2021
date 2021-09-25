@@ -1,59 +1,59 @@
 .add-product,
 .remove-product,
-.delete-custom,
+.return-home,
 .add-basket,
 .delete-basket {
-    position: relative;
-    width: 33px;
-    border-radius: 50%;
-    aspect-ratio: 1/1;
-    border: 0px;
-    background-color: transparent;
+  position: relative;
+  width: 33px;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  border: 0px;
+  background-color: transparent;
 }
 
 .add-product::after,
 .remove-product::after,
-.delete-custom::after,
+.return-home::after,
 .add-basket::after,
 .delete-basket::after {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    font-size: 1.5rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  font-size: 1.5rem;
 }
 
 .add-product:active,
 .remove-product:active,
-.delete-custom:active,
+.return-home:active,
 .add-basket:active,
 .delete-basket:active {
-    transform: scale(0.8);
+  transform: scale(0.8);
 }
 
 .add-product:hover,
 .remove-product:hover,
-.delete-custom:hover,
+.return-home:hover,
 .add-basket:hover,
 .delete-basket:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .add-product {
-    background-color: rgb(78, 78, 78);
-    &::after {
-        content: "\f067";
-        color: white;
-    }
+  background-color: rgb(78, 78, 78);
+  &::after {
+    content: "\f067";
+    color: white;
+  }
 }
 
 .remove-product,
 .delete-basket,
-.delete-custom {
-    background-color: transparent;
-    &::after {
-        content: "\f1f8";
-    }
+.return-home {
+  background-color: transparent;
+  &::after {
+    content: "\f1f8";
+  }
 }

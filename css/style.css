@@ -127,7 +127,7 @@ img {
 
 .add-product,
 .remove-product,
-.delete-custom,
+.return-home,
 .add-basket,
 .delete-basket {
   position: relative;
@@ -140,7 +140,7 @@ img {
 
 .add-product::after,
 .remove-product::after,
-.delete-custom::after,
+.return-home::after,
 .add-basket::after,
 .delete-basket::after {
   position: absolute;
@@ -154,7 +154,7 @@ img {
 
 .add-product:active,
 .remove-product:active,
-.delete-custom:active,
+.return-home:active,
 .add-basket:active,
 .delete-basket:active {
   transform: scale(0.8);
@@ -162,7 +162,7 @@ img {
 
 .add-product:hover,
 .remove-product:hover,
-.delete-custom:hover,
+.return-home:hover,
 .add-basket:hover,
 .delete-basket:hover {
   cursor: pointer;
@@ -179,13 +179,13 @@ img {
 
 .remove-product,
 .delete-basket,
-.delete-custom {
+.return-home {
   background-color: transparent;
 }
 
 .remove-product::after,
 .delete-basket::after,
-.delete-custom::after {
+.return-home::after {
   content: "\f1f8";
 }
 
@@ -611,14 +611,14 @@ img {
   }
 }
 
-.custom__item .delete-custom {
+.custom__item .return-home {
   grid-area: removeCustom;
   justify-self: flex-end;
   align-self: flex-end;
 }
 
 @media screen and (max-width: 700px) {
-  .custom__item .delete-custom {
+  .custom__item .return-home {
     justify-self: flex-start;
     align-self: center;
   }

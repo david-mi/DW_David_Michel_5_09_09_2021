@@ -1,19 +1,17 @@
 fetch(apiTeddies)
-  .then((response) => {
+  .then(response => {
     return response.json();
   })
-  .then((data) => {
+  .then(data => {
     const formContainer = document.querySelector('.form__container');
     const totalPrice = document.querySelector('.total__price');
     const storageMainTitle = document.querySelector('.main-title');
 
     // fonction pour check si l'item basket est présent dans le localstorage ou contient quelque chose
     let storageBasketCheck = () => {
-      if (
-        (localStorage.getItem('basket') === null) |
-        (localStorage.getItem('basket') === '[]') |
-        (localStorage.getItem('products') === '[]')
-      ) {
+      if ((localStorage.getItem('basket') === null) |
+          (localStorage.getItem('basket') === '[]') |
+          (localStorage.getItem('products') === '[]')) {
         // si la condition est remplie, on retire les éléments du dom et on indique que le panier est vide
         storageMainTitle.innerText = 'Panier Vide';
         formContainer.innerHTML = '';
@@ -36,6 +34,7 @@ fetch(apiTeddies)
     for (let j of storageBasket) {
       /// intération dans les objets de l'API
       for (let i of data) {
+        console.log(data);
         // Affichages des objets sélectionnés dans le DOM
         if (i._id === j.id) {
           document.querySelector('.basket-list').innerHTML += `
@@ -45,7 +44,9 @@ fetch(apiTeddies)
                 <span class="basket__item--color">${j.color}</span>
                 <label class="basket__item--quantity-label">Quantité</label>
                 <input class="basket__item--quantity" id="quantity" type="number" min="1" placeholder="quantité">
-                <span class="basket__item--total">Prix: <strong class="price-qty">${i.price}</strong> €</span>
+                <span class="basket__item--total">Prix: <strong class="price-qty">${
+                  i.price / 100
+                }</strong> €</span>
                 <button type="submit" class="delete-basket">
             </li>`;
         }
@@ -67,7 +68,7 @@ fetch(apiTeddies)
     };
 
     /// fonction pour envoyer les prix initiaux dans un tableau
-    const initialPrice = (value) => {
+    const initialPrice = value => {
       priceTab.push(price[value].innerText);
       // va stocker les prix initiaux dans un tableau sans les altérer
       priceTabCopy = priceTab.slice();
@@ -156,9 +157,7 @@ fetch(apiTeddies)
 
     const formInput = document.querySelectorAll('form input');
     const formSmall = document.querySelectorAll('form small');
-    const labelInputContainer = document.querySelectorAll(
-      'form .label-input-container'
-    );
+    const labelInputContainer = document.querySelectorAll('form .label-input-container');
     const formEmail = document.querySelector('#mail');
     let formData = '';
 
@@ -261,10 +260,7 @@ ailleurs que le sur bouton */
     // envoi du tableau products et de l'objet contact
 
     const submitBtn = document.getElementById('form-submit');
-    const apiPost = 'https://ab-p5-api.herokuapp.com/api/teddies/order';
-    const submitBtnSmall = document.querySelector(
-      '.submit-btn-container small'
-    );
+    const submitBtnSmall = document.querySelector('.submit-btn-container small');
 
     // success
     const successPost = (info) => {
@@ -277,30 +273,28 @@ ailleurs que le sur bouton */
         <h2 confirm__title>Informations personnelles</h2>
         <article class="confirm__personnal-infos">
             <ul class="personnal-infos__list-container">
-                <li>Nom : <b>${info.contact.firstName}</b></li>
-                <li>Prénom : <b>${info.contact.lastName}</b></li>
-                <li>Adresse : <b>${info.contact.address}</b></li>
-                <li>Ville : <b>${info.contact.city}</b></li>
-                <li>Email : <b>${info.contact.email}</b></li>
-                <li>Id de commande:<br>
-                  <b>${info.orderId}</b></li>
+              <li>Nom : <b>${info.contact.firstName}</b></li>
+              <li>Prénom : <b>${info.contact.lastName}</b></li>
+              <li>Adresse : <b>${info.contact.address}</b></li>
+              <li>Ville : <b>${info.contact.city}</b></li>
+              <li>Email : <b>${info.contact.email}</b></li>
+              <li>Id de commande:<br>
+              <b>${info.orderId}</b></li>
             </ul>
         </article>
         <h2 confirm__title>Produits commandés</h2>
         <article class="confirm__basket-infos">
-        <ul class="basket-infos__list-container">
-        </ul>
+          <ul class="basket-infos__list-container">
+          </ul>
         </article>
         <h3></h3>
         <a class="btn-home" href="../index.html">Retourner à la page d'accueil</a>
     </section>`;
       for (let i = 0; i < basketItemCard.length; i += 1) {
         document.querySelector('.basket-infos__list-container').innerHTML += `
-            <li>${basketItemName[i].innerText} couleur ${basketItemColor[i].innerText} x${inputQty[i].value}</li>
-          `;
+        <li>${basketItemName[i].innerText} couleur ${basketItemColor[i].innerText} x${inputQty[i].value}</li>`;
       }
-      document.querySelector('.confirm__container h3').innerText =
-        totalPrice.innerText;
+      document.querySelector('.confirm__container h3').innerText = totalPrice.innerText;
       localStorage.clear();
     };
 
@@ -312,8 +306,8 @@ ailleurs que le sur bouton */
         },
 
         body: JSON.stringify({ contact, products }),
-      }).then((response) =>
-        response.json().then((info) => {
+      }).then(response =>
+        response.json().then(info => {
           console.log(info);
           successPost(info);
         })
@@ -328,3 +322,4 @@ ailleurs que le sur bouton */
       console.log(contact);
     });
   });
+
