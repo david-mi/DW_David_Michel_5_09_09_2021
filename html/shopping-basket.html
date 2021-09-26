@@ -34,34 +34,15 @@
     </div>
     <fieldset class="form__container">
       <h2 class="form-title">Vos coordonnées</h2>
-      <form
-        id="form"
-        class="form"
-        action=""
-        method="POST"
-      >
+      <form id="form" class="form" action="http://localhost:3000/api/teddies/order" method="POST">
         <div class="label-input-container form__first--name">
           <label for="firstName">Votre Nom</label>
-          <input
-            type="text"
-            name="firstname"
-            id="firstName"
-            minlength="2"
-            maxlength="26"
-            required
-          />
+          <input type="text" name="firstname" id="firstName" maxlength="26" required/>
           <small></small>
         </div>
         <div class="label-input-container form__last--name">
           <label for="lastName">Votre Prénom</label>
-          <input
-            type="text"
-            name="lastname"
-            id="lastName"
-            minlength="2"
-            maxlength="26"
-            required
-          />
+          <input type="text" name="lastname" id="lastName" maxlength="26" required/>
           <small></small>
         </div>
         <div class="label-input-container form__address">
