@@ -9,19 +9,19 @@ fetch(apiTeddies)
       storageBasket = [];
     }
 
-    /* récupération de l'id contenu dans les URL */
+    /* récupération de l'id contenue dans les URL */
     let paramUrl = new URLSearchParams(window.location.search);
     let idGet = paramUrl.get('id');
-
-    /* fonction pour vérifier si l'url de la page product contient bien un id */
-    const checkEmpty = () => {
-      // si aucun id est présent, on affiche un message d'avertissement dans le DOM
+    
+      // si aucun id est présent dans l'url de la page, on affiche un message d'avertissement dans le DOM et on stop le script
+      let idEmpty = ''
       if (idGet === null) {
         document.querySelector('.main-title').innerText = `Veuillez ajouter un produit via la page d'accueil`;
+        idEmpty = false
+        return;
+      }else{
+        idEmpty = true;
       }
-    };
-
-    checkEmpty();
 
     ///////////// AFFICHER LES ITEMS CHOISI DE L'API DANS LE DOM ////////////////////
     let tabColor = ''
@@ -33,20 +33,19 @@ fetch(apiTeddies)
     for (let i = 0; i < data.length; i++) {
       /* comparaison des des id trouvées dans le localStorage avec les id de l'api */
       if (data[i]._id == idGet) {
-        /* affichage dans le dom des produits ayant été ajouté dans le localstorage uniquement
-            avec la première couleur disponible pour chaque produit */
+            /* affichage dans le dom des produits ayant été ajouté dans le localstorage uniquement avec la première couleur disponible pour chaque produit */
             console.log(data[i].colors)
             tabColor = data[i].colors
         customList.innerHTML += `
             <li class="custom__item">
                 <h2 class="custom__item--name">${data[i].name}</h2>
-                <strong class="custom__item--price">${data[i].price}€</strong>
+                <strong class="custom__item--price">${data[i].price/100}€</strong>
                 <a class="custom__item--link" href="${data[i].imageUrl}"><img class="custom__item--picture" src="${data[i].imageUrl}"></a>
                 <span class="instruction">${chosingText}</span>
                 <div class="custom-choice" id="${data[i]._id}">${data[i].colors[colorNb]}</div>
                 <button type="submit" class="custom-next"></button>
                 <button type="submit" class="custom-previous"></button>
-                <a class="return-home"></a>
+                <a class="custom-delete"></a>
                 <button type="submit" class="add-basket"></button>
             </li>`;
       }
@@ -87,8 +86,7 @@ console.log(tabColor)
       customChoice.innerText = obj.colors[colorNb];
     };
 
-    /* double boucle afin d'itérer dans les données de l'api et aussi parmi
-        les boutons suivant/précédent de chaque vignette*/
+    /* itération parmi les objets de l'api */
     for (let obj of data) {
       if (obj._id == customChoice.id) {
         /* écoute du clic sur les boutons précédent/suivant et application des fonctions */
@@ -104,12 +102,13 @@ console.log(tabColor)
       }
     }
 
-    const returnHome = document.querySelector('.return-home');
-    const itemNames = document.querySelector('.custom__item--name');
-    const headerBasket = document.querySelector('.header__list--basket');
+  
 
     /////////////////////////////   AJOUT DES ITEMS AU PANIER ///////////////////////////////////////
 
+    const customDel = document.querySelector('.custom-delete');
+    const itemNames = document.querySelector('.custom__item--name');
+    const headerBasket = document.querySelector('.header__list--basket');
     const addBasketBtn = document.querySelector('.add-basket');
     const itemInstruction = document.querySelector('.instruction');
 
@@ -171,10 +170,8 @@ console.log(tabColor)
       localStorage.setItem('basket', JSON.stringify(storageBasket));
     });
 
-    
-
     /// écoute du clic sur chaque boutons de suppression
-    returnHome.addEventListener('click', () => {
+    customDel.addEventListener('click', () => {
       let checkBasket = storageBasket.some(elem => {return elem.color === customChoice.innerText} )
       if (checkBasket === false){
         showInstruction('a déjà été supprimée du panier');
@@ -183,9 +180,6 @@ console.log(tabColor)
       }
       // itération dans le tableau storageBasket
       for (let j = 0; j < storageBasket.length; j += 1) {
-
-       
-    
         // si l'item sélectionné est le même que celui du tableau, suppression du tableau
         if (
           storageBasket[j].name === itemNames.innerText &&

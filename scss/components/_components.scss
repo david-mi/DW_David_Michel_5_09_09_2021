@@ -1,6 +1,6 @@
 .add-product,
 .remove-product,
-.return-home,
+.custom-delete,
 .add-basket,
 .delete-basket {
   position: relative;
@@ -13,7 +13,7 @@
 
 .add-product::after,
 .remove-product::after,
-.return-home::after,
+.custom-delete::after,
 .add-basket::after,
 .delete-basket::after {
   position: absolute;
@@ -27,7 +27,7 @@
 
 .add-product:active,
 .remove-product:active,
-.return-home:active,
+.custom-delete:active,
 .add-basket:active,
 .delete-basket:active {
   transform: scale(0.8);
@@ -35,7 +35,7 @@
 
 .add-product:hover,
 .remove-product:hover,
-.return-home:hover,
+.custom-delete:hover,
 .add-basket:hover,
 .delete-basket:hover {
   cursor: pointer;
@@ -51,7 +51,7 @@
 
 .remove-product,
 .delete-basket,
-.return-home {
+.custom-delete {
   background-color: transparent;
   &::after {
     content: "\f1f8";

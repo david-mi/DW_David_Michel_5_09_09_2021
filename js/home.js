@@ -6,12 +6,12 @@ fetch(apiTeddies)
     const list = document.querySelector('.products__list');
     let idUrl = '';
     const changePath = (data,i) =>{
-    if (urlPath !== 'http://localhost:5500'){
-      idUrl = new URL(`David_Michel_5_09_09_2021/html/custom.html?id=${data[i]._id}`,urlPath);
-    }else{
-      idUrl = new URL(`html/custom.html?id=${data[i]._id}`,urlPath);
+      if (urlPath !== 'http://localhost:5500') {
+        idUrl = new URL(`David_Michel_5_09_09_2021/html/product.html?id=${data[i]._id}`,urlPath);
+      } else {
+        idUrl = new URL(`html/product.html?id=${data[i]._id}`,urlPath);
+      }
     }
-  }
     ////////// AFFICHAGE DES ITEMS DE L'API DANS LE DOM //////////
     // itération dans les data
     for (let i = 0; i < data.length; i++) {
