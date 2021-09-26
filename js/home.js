@@ -24,7 +24,7 @@ fetch(apiTeddies)
             <span class="list__item--description">${data[i].description}</span>
             <strong class="list__item--price">${data[i].price / 100}€</strong>
             <a class="list__item--link" href="${data[i].imageUrl}">
-            <img class="list__item--picture" src="${data[i].imageUrl}"></a>
+            <img class="list__item--picture" alt="L'ourson ${data[i].name}" src="${data[i].imageUrl}"></a>
             <a href="${idUrl}"class="add-product"></a>
         </li>`;
       /* au clic sur le bouton plus l'utilisateur sera redirigé vers la page de personnalisation

@@ -40,7 +40,9 @@ fetch(apiTeddies)
             <li class="custom__item">
                 <h2 class="custom__item--name">${data[i].name}</h2>
                 <strong class="custom__item--price">${data[i].price/100}€</strong>
-                <a class="custom__item--link" href="${data[i].imageUrl}"><img class="custom__item--picture" src="${data[i].imageUrl}"></a>
+                <a class="custom__item--link" href="${data[i].imageUrl}">
+                  <img class="custom__item--picture" alt="l'ourson ${data[i].name}" src="${data[i].imageUrl}">
+                </a>
                 <span class="instruction">${chosingText}</span>
                 <div class="custom-choice" id="${data[i]._id}">${data[i].colors[colorNb]}</div>
                 <button type="submit" class="custom-next"></button>

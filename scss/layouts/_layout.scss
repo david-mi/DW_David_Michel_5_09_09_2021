@@ -45,13 +45,13 @@
       width: 100%;
       background-color: black;
       left: 0px;
-      transform: scaleX(0%);
+      transform: scaleX(0);
       transition: ease-out 200ms;
     }
 
     &--products:hover::before,
     .header__list--index:hover::before {
-      transform: scaleX(100%);
+      transform: scaleX(1);
     }
 
     &--basket {

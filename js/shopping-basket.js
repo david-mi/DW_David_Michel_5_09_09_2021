@@ -39,7 +39,7 @@ fetch(apiTeddies)
         if (i._id === j.id) {
           document.querySelector('.basket-list').innerHTML += `
             <li class="basket__item" id="${i._id}">
-                <img class="basket__item--picture" src="${i.imageUrl}">
+                <img class="basket__item--picture" alt="L'ourson ${i.name}"src="${i.imageUrl}">
                 <h2 class="basket__item--name">${i.name}</h2>
                 <span class="basket__item--color">${j.color}</span>
                 <label class="basket__item--quantity-label">Quantité</label>

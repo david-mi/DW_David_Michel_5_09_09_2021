@@ -240,13 +240,13 @@ img {
   width: 100%;
   background-color: black;
   left: 0px;
-  transform: scaleX(0%);
+  transform: scaleX(0);
   transition: ease-out 200ms;
 }
 
 .header__list--products:hover::before,
 .header__list .header__list--index:hover::before {
-  transform: scaleX(100%);
+  transform: scaleX(1);
 }
 
 .header__list--basket {
@@ -841,7 +841,7 @@ img {
   content: "";
   background-color: hotpink;
   width: 50px;
-  border-radius: 0px 0px 5px #525252;
+  border: 0px 0px 5px #525252;
   aspect-ratio: 1/1;
   position: absolute;
   top: 100px;
