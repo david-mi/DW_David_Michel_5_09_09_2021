@@ -35,7 +35,6 @@ fetch(apiTeddies)
       if (obj._id == idGet) {
             /* affichage dans le dom des produits ayant été ajouté dans le localstorage 
             uniquement avec la première couleur disponible pour chaque produit */
-            console.log(obj.colors)
             tabColor = obj.colors
         customList.innerHTML = `
             <li class="custom__item">

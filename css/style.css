@@ -836,6 +836,10 @@ img {
   }
 }
 
+.confirm__container .main__title {
+  margin-top: 50px;
+}
+
 .confirm__container::before {
   animation: inf-rotate 3s linear infinite both;
   content: "";

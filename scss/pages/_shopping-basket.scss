@@ -181,6 +181,10 @@
     padding-top: 200px;
   }
 
+  .main__title{
+    margin-top: 50px;
+  }
+
   &::before {
     animation: inf-rotate 3s linear infinite both;
     content: "";
