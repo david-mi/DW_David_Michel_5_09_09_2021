@@ -27,24 +27,25 @@ fetch(apiTeddies)
     let tabColor = ''
     let colorNb = 0;
     const customList = document.querySelector('.custom__list');
-    let chosingText = `Choisissez votre couleur de peluche et ajoutez-la au panier`;
+    const chosingText = `Choisissez votre couleur de peluche et ajoutez-la au panier`;
 
     /// itération dans l'api
-    for (let i = 0; i < data.length; i++) {
+    for (let obj of data) {
       /* comparaison des des id trouvées dans le localStorage avec les id de l'api */
-      if (data[i]._id == idGet) {
-            /* affichage dans le dom des produits ayant été ajouté dans le localstorage uniquement avec la première couleur disponible pour chaque produit */
-            console.log(data[i].colors)
-            tabColor = data[i].colors
-        customList.innerHTML += `
+      if (obj._id == idGet) {
+            /* affichage dans le dom des produits ayant été ajouté dans le localstorage 
+            uniquement avec la première couleur disponible pour chaque produit */
+            console.log(obj.colors)
+            tabColor = obj.colors
+        customList.innerHTML = `
             <li class="custom__item">
-                <h2 class="custom__item--name">${data[i].name}</h2>
-                <strong class="custom__item--price">${data[i].price/100}€</strong>
-                <a class="custom__item--link" href="${data[i].imageUrl}">
-                  <img class="custom__item--picture" alt="l'ourson ${data[i].name}" src="${data[i].imageUrl}">
+                <h2 class="custom__item--name">${obj.name}</h2>
+                <strong class="custom__item--price">${obj.price/100}€</strong>
+                <a class="custom__item--link" href="${obj.imageUrl}">
+                  <img class="custom__item--picture" alt="l'ourson ${obj.name}" src="${obj.imageUrl}">
                 </a>
                 <span class="instruction">${chosingText}</span>
-                <div class="custom-choice" id="${data[i]._id}">${data[i].colors[colorNb]}</div>
+                <div class="custom-choice" id="${obj._id}">${obj.colors[colorNb]}</div>
                 <button type="submit" class="custom-next"></button>
                 <button type="submit" class="custom-previous"></button>
                 <a class="custom-delete"></a>
@@ -52,7 +53,7 @@ fetch(apiTeddies)
             </li>`;
       }
     }
-console.log(tabColor)
+
     ////////////////////////////////// SELECTIONNER LA COULEUR DE SON CHOIX SELON L'OURS CHOISI /////////////////////////////
 
     const customChoice = document.querySelector('.custom-choice');

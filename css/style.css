@@ -864,6 +864,10 @@ img {
   align-items: center;
 }
 
+.confirm__container article h2 {
+  padding-bottom: 50px;
+}
+
 .confirm__container .btn-home {
   background-color: #F4E9F0;
   padding: 10px 20px;

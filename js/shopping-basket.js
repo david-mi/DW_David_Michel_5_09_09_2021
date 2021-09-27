@@ -34,7 +34,6 @@ fetch(apiTeddies)
     for (let j of storageBasket) {
       /// intération dans les objets de l'API
       for (let i of data) {
-        console.log(data);
         // Affichages des objets sélectionnés dans le DOM
         if (i._id === j.id) {
           document.querySelector('.basket-list').innerHTML += `
@@ -44,9 +43,7 @@ fetch(apiTeddies)
                 <span class="basket__item--color">${j.color}</span>
                 <label class="basket__item--quantity-label">Quantité</label>
                 <input class="basket__item--quantity" id="quantity" type="number" min="1" placeholder="quantité">
-                <span class="basket__item--total">Prix: <strong class="price-qty">${
-                  i.price / 100
-                }</strong> €</span>
+                <span class="basket__item--total">Prix: <strong class="price-qty">${i.price / 100}</strong> €</span>
                 <button type="submit" class="delete-basket">
             </li>`;
         }
@@ -104,8 +101,6 @@ fetch(apiTeddies)
     const basketItemName = document.querySelectorAll('.basket__item--name');
     const basketItemColor = document.querySelectorAll('.basket__item--color');
     let products = [];
-
-    /// AJOUT DES ID UNIQUES DANS UN TABLEAU PRODUCTS ///
 
     /* fonction permettant d'ajouter les id dans le tableau products
         en un seul exemplaire */
@@ -229,13 +224,37 @@ fetch(apiTeddies)
     }
 
     /* retirer le message d'avertissement au dessus du bouton envoyer quand on clique
-ailleurs que le sur bouton */
+    ailleurs que le sur bouton */
     document.body.addEventListener('click', function (e) {
       if (!e.target.classList.contains('send')) {
         submitBtnSmall.innerText = '';
       }
     });
 
+    // fetch post pour envoyer les informations vers l'api
+    postData = () => {
+      fetch(apiPost, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ contact, products })
+      })
+      .then(response => {
+        console.log(response)
+        if (!response.ok){
+          console.log('Requête échouée')
+          submitBtnSmall.innerText = "Envoi échoué"
+        }else{
+          console.log('Requête réussie')
+          return response.json()
+        }
+      })
+      .then(info => {
+          console.log(info);
+          successPost(info);
+        })
+    };
+
+    // fonction pour voir null est présent dans contact
     const formCheck = () => {
       // transfomation de l'object contact en tableau
       let contactTab = Object.values(contact);
@@ -245,33 +264,31 @@ ailleurs que le sur bouton */
 
       /// si c'est true, message dans le dom indiquant que le formulaire est incomplet
       if (contactTabcheck === true) {
-        console.log('incomplet');
         submitBtnSmall.innerText = 'Formulaire incomplet';
         submitBtnSmall.classList.add('fail');
 
         /// si c'est false, envoi des éléments à l'api et message dans le dom pour dire que c'est envoyé
-      } else {
+      } else if (contactTabcheck === false) {
         submitBtnSmall.innerText = 'Formulaire envoyé';
         submitBtnSmall.classList.remove('fail');
         postData();
       }
     };
 
-    // envoi du tableau products et de l'objet contact
-
     const submitBtn = document.getElementById('form-submit');
     const submitBtnSmall = document.querySelector('.submit-btn-container small');
 
-    // success
+    /*fonction affichant l'id de la commande et récapitulant les infos de la commande 
+    si celle-ci aboutit */
     const successPost = (info) => {
       formContainer.classList.add('display');
       document.querySelector('.custom').classList.add('display');
       storageMainTitle.innerText = 'Commande effectuée';
-      console.log(storageBasket);
       document.querySelector('body').innerHTML = `
-    <section class="confirm__container">
-        <h2 confirm__title>Informations personnelles</h2>
-        <article class="confirm__personnal-infos">
+      <section class="confirm__container">
+          <h1 class="main__title">Merci pour votre commande !</h1>
+          <article class="confirm__personnal-infos">
+            <h2 class="confirm__title">Informations personnelles</h2>
             <ul class="personnal-infos__list-container">
               <li>Nom : <b>${info.contact.firstName}</b></li>
               <li>Prénom : <b>${info.contact.lastName}</b></li>
@@ -281,15 +298,15 @@ ailleurs que le sur bouton */
               <li>Id de commande:<br>
               <b>${info.orderId}</b></li>
             </ul>
-        </article>
-        <h2 confirm__title>Produits commandés</h2>
-        <article class="confirm__basket-infos">
-          <ul class="basket-infos__list-container">
-          </ul>
-        </article>
-        <h3></h3>
-        <a class="btn-home" href="../index.html">Retourner à la page d'accueil</a>
-    </section>`;
+          </article>
+          <article class="confirm__basket-infos">
+            <h2 class="confirm__basket">Produits commandés</h2>
+            <ul class="basket-infos__list-container">
+            </ul>
+          </article>
+          <h3></h3>
+          <a class="btn-home" href="../index.html">Retourner à la page d'accueil</a>
+      </section>`;
       for (let i = 0; i < basketItemCard.length; i += 1) {
         document.querySelector('.basket-infos__list-container').innerHTML += `
         <li>${basketItemName[i].innerText} couleur ${basketItemColor[i].innerText} x${inputQty[i].value}</li>`;
@@ -298,22 +315,7 @@ ailleurs que le sur bouton */
       localStorage.clear();
     };
 
-    postData = () => {
-      fetch(apiPost, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-
-        body: JSON.stringify({ contact, products }),
-      }).then(response =>
-        response.json().then(info => {
-          console.log(info);
-          successPost(info);
-        })
-      );
-    };
-
+    // écoute du clic sur le bouton envoyer et application des fonctions
     submitBtn.addEventListener('click', (e) => {
       e.preventDefault();
       products = JSON.parse(localStorage.getItem('products'));
@@ -321,5 +323,6 @@ ailleurs que le sur bouton */
       console.log(products);
       console.log(contact);
     });
+
   });
 
