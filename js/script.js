@@ -1,5 +1,5 @@
-const apiTeddies = 'http://localhost:3000/api/teddies';
-const apiPost = 'http://localhost:3000/api/teddies/order';
+let apiTeddies = 'http://localhost:3000/api/teddies';
+let apiPost = 'http://localhost:3000/api/teddies/order';
 const urlPath = window.location.origin;
 if (urlPath !== 'http://localhost:5500'){
     apiTeddies = 'https://ab-p5-api.herokuapp.com/api/teddies'
