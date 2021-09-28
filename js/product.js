@@ -152,6 +152,7 @@ fetch(apiTeddies)
         name: itemNames.innerText,
         id: customChoice.id,
         color: customChoice.innerText,
+        quantity : 1,
       };
 
       /// vérifie si l'objet qui est sur le point d'être envoyé dans le tableau existe déjà dans celui-ci

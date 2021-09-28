@@ -88,7 +88,7 @@ fetch(apiTeddies)
       inputQty[j].addEventListener('input', function () {
         /// calcul et affichage du prix total en fonction de la quantité spécifiée
         price[j].innerText = this.value * priceTabCopy[j];
-
+        BasketQtyAdd(j);
         /// mise à jour du prix final dans le DOM
         finalPriceUpdate(j, price[j].innerText);
       });
@@ -315,9 +315,19 @@ fetch(apiTeddies)
       localStorage.clear();
     };
 
+    /// fonction pour mettre à jour les quantités des items de storageBasket
+    const BasketQtyAdd = () =>{
+      storageBasket = JSON.parse(localStorage.getItem('basket'));
+      for (let i = 0; i<storageBasket.length; i++){
+        storageBasket[i].quantity = inputQty[i].value
+      }
+      localStorage.setItem('basket', JSON.stringify(storageBasket));
+    } 
+
     // écoute du clic sur le bouton envoyer et application des fonctions
     submitBtn.addEventListener('click', (e) => {
       e.preventDefault();
+      BasketQtyAdd();
       products = JSON.parse(localStorage.getItem('products'));
       formCheck();
       console.log(products);
