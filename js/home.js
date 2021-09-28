@@ -4,19 +4,14 @@ fetch(apiTeddies)
   })
   .then(data => {
     const list = document.querySelector('.products__list');
-    let idUrl = '';
-    const changePath = (value) =>{
-      if (urlPath !== 'http://localhost:5500') {
-        idUrl = new URL(`David_Michel_5_09_09_2021/html/product.html?id=${value._id}`,urlPath);
-      } else {
-        idUrl = new URL(`html/product.html?id=${value._id}`,urlPath);
-      }
-    }
+    const urlPath = window.location.origin;
+   
     ////////// AFFICHAGE DES ITEMS DE L'API DANS LE DOM //////////
+
     // itération dans les data
     for (let obj of data) {
-      // création d'une url vers custom contenant un id propre
-      changePath(obj);
+      // création d'un paramètre URL contenant un id obj
+      let idUrl = new URL(`html/product.html?id=${obj._id}`,urlPath);
       // affichage dans le dom des objets de l'api
       list.innerHTML += `
         <li class="list__item">
