@@ -139,7 +139,7 @@ fetch(apiTeddies)
             productSplice();
             localStorage.setItem('products', JSON.stringify(products));
             localStorage.setItem('basket', JSON.stringify(storageBasket));
-            basketItemCard[i].remove();
+            basketItemCard[i].classList.add('display');
             finalPriceUpdate(i, null);
             storageBasketCheck();
           }
@@ -307,8 +307,10 @@ fetch(apiTeddies)
           <a class="btn-home" href="../index.html">Retourner à la page d'accueil</a>
       </section>`;
       for (let i = 0; i < basketItemCard.length; i += 1) {
-        document.querySelector('.basket-infos__list-container').innerHTML += `
+        if(!basketItemCard[i].classList.contains('display')){
+           document.querySelector('.basket-infos__list-container').innerHTML += `
         <li>${basketItemName[i].innerText} couleur ${basketItemColor[i].innerText} x${inputQty[i].value}</li>`;
+        }
       }
       document.querySelector('.confirm__container h3').innerText = totalPrice.innerText;
       localStorage.clear();

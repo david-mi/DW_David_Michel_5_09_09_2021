@@ -25,7 +25,7 @@ img {
 }
 
 .display {
-  display: none;
+  display: none !important;
 }
 
 .success {
