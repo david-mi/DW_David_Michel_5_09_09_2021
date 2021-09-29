@@ -30,19 +30,22 @@ fetch(apiTeddies)
       return false;
     }
 
+    // compte le nombre d'éléments initiaux
+    let nB = 0;
     //// itération dans le tableau récupéré du storage
     for (let j of storageBasket) {
       /// intération dans les objets de l'API
       for (let i of data) {
         // Affichages des objets sélectionnés dans le DOM
         if (i._id === j.id) {
+          nB += 1;
           document.querySelector('.basket-list').innerHTML += `
-            <li class="basket__item" id="${i._id}">
+            <li class="basket__item">
                 <img class="basket__item--picture" alt="L'ourson ${i.name}"src="${i.imageUrl}">
                 <h2 class="basket__item--name">${i.name}</h2>
                 <span class="basket__item--color">${j.color}</span>
-                <label class="basket__item--quantity-label">Quantité</label>
-                <input class="basket__item--quantity" id="quantity" type="number" min="1" placeholder="quantité">
+                <label class="basket__item--quantity-label" for="quantity-${nB}">Quantité</label>
+                <input class="basket__item--quantity" id="quantity-${nB}" name="quantity-${nB}" type="number" min="1" placeholder="quantité">
                 <span class="basket__item--total">Prix: <strong class="price-qty">${i.price / 100}</strong> €</span>
                 <button type="submit" class="delete-basket">
             </li>`;
